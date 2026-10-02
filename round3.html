@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coralverse - Grand Finale</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Press+Start+2P&family=Rajdhani:wght@600;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh; display: flex; justify-content: center; align-items: flex-start;
+      background: radial-gradient(circle at 50% 10%, #3a1c71, #d76d77, #110925, #000000);
+      background-size: 300% 300%; animation: luxuryBG 12s ease infinite;
+      color: #e0f7fa; font-family: 'Rajdhani', sans-serif; padding: 80px 20px 60px 20px;
+    }
+
+    @keyframes luxuryBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .floating-logo {
+      position: fixed; top: 20px; left: 20px; width: 65px; height: 65px;
+      border-radius: 50%; border: 2px solid #ffd700; box-shadow: 0 0 15px #ffd700;
+      z-index: 1000; background: #08031d; object-fit: cover; transition: left 0.5s ease;
+    }
+    .floating-logo.scrolled { left: calc(100% - 85px); }
+
+    .neon-card {
+      width: 100%; max-width: 720px; border-radius: 20px; padding: 5px;
+      background: linear-gradient(135deg, #ffd700, #ff0055, #00f2fe);
+      box-shadow: 0 0 35px rgba(255, 215, 0, 0.4);
+    }
+
+    .card-inner { background: #0b0c10; border-radius: 16px; padding: 35px 25px; }
+    .form-title { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; color: #ffffff; text-align: center; text-shadow: 0 0 10px #ffd700; }
+    .subtitle-badge { font-family: 'Press Start 2P', monospace; font-size: 0.75rem; color: #ffd700; text-align: center; margin-bottom: 25px; display: block; }
+
+    .user-block { background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .user-block label { font-family: 'Orbitron', sans-serif; color: #ffd700; font-size: 0.8rem; display: block; margin-bottom: 6px; }
+    .user-input { width: 100%; padding: 10px; border-radius: 6px; border: none; background: #e8ecef; font-weight: 700; color: #12131c; }
+
+    .question-block { background: rgba(255, 255, 255, 0.04); border-left: 4px solid #ffd700; padding: 20px; border-radius: 8px; margin-bottom: 25px; text-align: left; }
+    .question-title { font-family: 'Orbitron', sans-serif; font-size: 1rem; color: #ffd700; margin-bottom: 8px; display: block; }
+    .prompt-text { font-size: 1.05rem; color: #e0f7fa; margin: 6px 0; font-weight: 600; }
+    .hint-text { color: #ffd700; font-size: 0.88rem; font-style: italic; margin-bottom: 12px; display: block; }
+
+    .option-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .option-label { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.05); padding: 12px 16px; border-radius: 8px; cursor: pointer; color: #c2e7ff; transition: all 0.2s ease; }
+    .option-label:hover { border-color: #ffd700; background: rgba(255, 215, 0, 0.15); }
+
+    .feedback-box { display: none; margin-top: 10px; padding: 10px; border-radius: 6px; font-weight: 700; font-family: 'Press Start 2P', monospace; font-size: 0.75rem; }
+
+    .submit-btn { width: 100%; padding: 18px; border: none; border-radius: 8px; background: linear-gradient(90deg, #ffd700, #ffaa00); color: #050214; font-family: 'Press Start 2P', monospace; font-size: 0.85rem; cursor: pointer; box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); margin-top: 20px; }
+    .completion-screen { display: none; text-align: center; padding: 20px 10px; }
+    .confirm-msg { font-size: 1.2rem; color: #e0f7fa; line-height: 1.6; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+  <img src="logo.jpg" id="floating-logo" class="floating-logo" alt="Logo">
+
+  <div class="neon-card">
+    <div class="card-inner">
+
+      <div id="quizView">
+        <h1 class="form-title">CORALVERSE</h1>
+        <span class="subtitle-badge">ROUND 3 : GRAND FINALE (10 MCQs)</span>
+
+        <form id="r3Form" onsubmit="submitRound3(event)">
+          <div class="user-block">
+            <div>
+              <label>CANDIDATE NAME *</label>
+              <input type="text" name="entry.2068595522" id="nameInput" class="user-input" required>
+            </div>
+            <div>
+              <label>PHONE NUMBER *</label>
+              <input type="tel" name="entry.201219341" id="phoneInput" class="user-input" pattern="[0-9]{10}" required>
+            </div>
+          </div>
+
+          <!-- Q1 -->
+          <div class="question-block">
+            <label class="question-title">1. 🧬 MUTATION DETECTIVE</label>
+            <p class="prompt-text">Original: ATG CCA TGC. 5th letter C → A. New sequence?</p>
+            <span class="hint-text">💡 Hint: A(1) T(2) G(3) C(4) C(5) A(6). Replace the 5th letter 'C' with 'A'!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.1400560995" value="ATG CAA TGC" required onchange="showFB('r3fb1', 'THAT\'S POSITION 4 AND 5 SWAP! 🧐', 'yellow')"> ATG CAA TGC</label>
+              <label class="option-label"><input type="radio" name="entry.1400560995" value="ATG CCA TGC" onchange="showFB('r3fb1', 'UNMUTATED ORIGINAL! 😴', '#ff4d4d')"> ATG CCA TGC</label>
+              <label class="option-label"><input type="radio" name="entry.1400560995" value="ATG ACA TGC" onchange="showFB('r3fb1', 'CORRECT 5TH BASE MUTATION! 🧬', '#ffd700')"> ATG ACA TGC</label>
+              <label class="option-label"><input type="radio" name="entry.1400560995" value="ATG CCT TGC" onchange="showFB('r3fb1', 'T IS WRONG BASE! ❌', '#ff4d4d')"> ATG CCT TGC</label>
+            </div>
+            <div id="r3fb1" class="feedback-box"></div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="question-block">
+            <label class="question-title">2. 🧩 DNA PATTERN CHALLENGE</label>
+            <p class="prompt-text">Which sequence contains the most G and C bases together?</p>
+            <span class="hint-text">💡 Hint: Count total 'G's plus 'C's in each option!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.2101212409" value="ATATATGC" required onchange="showFB('r3fb2', 'ONLY 2 GC BASES! 📉', '#ff4d4d')"> ATATATGC</label>
+              <label class="option-label"><input type="radio" name="entry.2101212409" value="GGCCATGC" onchange="showFB('r3fb2', '6 OUT OF 8 GC BASES! MAXIMUM! 🏆', '#ffd700')"> GGCCATGC</label>
+              <label class="option-label"><input type="radio" name="entry.2101212409" value="AAAAATTT" onchange="showFB('r3fb2', 'ZERO GC CONTENT! 🌵', '#ff4d4d')"> AAAAATTT</label>
+              <label class="option-label"><input type="radio" name="entry.2101212409" value="ATATGCAT" onchange="showFB('r3fb2', 'ONLY 2 GC BASES! 📉', 'yellow')"> ATATGCAT</label>
+            </div>
+            <div id="r3fb2" class="feedback-box"></div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="question-block">
+            <label class="question-title">3. 🤖 HUMAN VS COMPUTER</label>
+            <p class="prompt-text">Comparing 10 DNA sequences. Which would do the job faster?</p>
+            <span class="hint-text">💡 Hint: Algorithms perform billions of operations per second!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.358446306" value="A human checking them one by one" required onchange="showFB('r3fb3', 'TOO SLOW FOR BIG DATA! 🐢', '#ff4d4d')"> A human checking them one by one</label>
+              <label class="option-label"><input type="radio" name="entry.358446306" value="A computer program designed to compare sequences" onchange="showFB('r3fb3', 'LIGHTNING FAST ALGORITHM! ⚡', '#ffd700')"> A computer program designed to compare sequences</label>
+              <label class="option-label"><input type="radio" name="entry.358446306" value="A calculator" onchange="showFB('r3fb3', 'CALCULATORS DON\'T ALIGN SEQUENCES! 🧮', 'yellow')"> A calculator</label>
+              <label class="option-label"><input type="radio" name="entry.358446306" value="A microscope" onchange="showFB('r3fb3', 'MICROSCOPES CAN\'T WRITE CODE! 🔬', '#ff4d4d')"> A microscope</label>
+            </div>
+            <div id="r3fb3" class="feedback-box"></div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="question-block">
+            <label class="question-title">4. THE LAZY SCIENTIST</label>
+            <p class="prompt-text">Computer says DNA Match = 95%. Student says "Exactly the same!". What's wrong?</p>
+            <span class="hint-text">💡 Hint: 95% is high similarity, but 5% difference remains!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.1360230168" value="95% means they are exactly the same" required onchange="showFB('r3fb4', '100% IS EXACTLY THE SAME! 🛑', '#ff4d4d')"> 95% means they are exactly the same</label>
+              <label class="option-label"><input type="radio" name="entry.1360230168" value="95% means they are similar, but not exactly identical" onchange="showFB('r3fb4', 'CRITICAL SCIENTIFIC MINDSET! 🧠', '#ffd700')"> 95% means they are similar, but not exactly identical</label>
+              <label class="option-label"><input type="radio" name="entry.1360230168" value="Computers cannot compare DNA" onchange="showFB('r3fb4', 'COMPUTERS DO THIS EVERY SECOND! 🤖', 'yellow')"> Computers cannot compare DNA</label>
+              <label class="option-label"><input type="radio" name="entry.1360230168" value="DNA cannot have percentages" onchange="showFB('r3fb4', 'PERCENTAGES MEASURE SIMILARITY! 📊', '#ff4d4d')"> DNA cannot have percentages</label>
+            </div>
+            <div id="r3fb4" class="feedback-box"></div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="question-block">
+            <label class="question-title">5. 🔍 FIND THE DIFFERENCE</label>
+            <p class="prompt-text">Sequence A: ATGCCT | Sequence B: ATGACT. How many positions are different?</p>
+            <span class="hint-text">💡 Hint: Compare letter by letter: A=A, T=T, G=G, C vs A (1), C vs C, T=T!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.1858694691" value="0" required onchange="showFB('r3fb5', 'LOOK AT POSITION 4 AGAIN! 🔍', '#ff4d4d')"> 0</label>
+              <label class="option-label"><input type="radio" name="entry.1858694691" value="1" onchange="showFB('r3fb5', 'EAGLE EYE! EXACTLY 1 DIFFERENCE! 🦅', '#ffd700')"> 1</label>
+              <label class="option-label"><input type="radio" name="entry.1858694691" value="2" onchange="showFB('r3fb5', 'COUNT AGAIN LETTER BY LETTER! 🧐', 'yellow')"> 2</label>
+              <label class="option-label"><input type="radio" name="entry.1858694691" value="3" onchange="showFB('r3fb5', 'TOO HIGH! ONLY 1 IS DIFFERENT! ❌', '#ff4d4d')"> 3</label>
+            </div>
+            <div id="r3fb5" class="feedback-box"></div>
+          </div>
+
+          <!-- Q6 -->
+          <div class="question-block">
+            <label class="question-title">6. 🧠 THINK LIKE A BIOINFORMATICIAN</label>
+            <p class="prompt-text">Sample A: AATGC | Sample B: ATTTG | Sample C: CCGTA. Most A bases?</p>
+            <span class="hint-text">💡 Hint: Sample A has 2 A's, Sample B has 1 A, Sample C has 1 A!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.765228693" value="sample A" required onchange="showFB('r3fb6', 'SAMPLE A HAS 2 A\'S! WINNER! 🏆', '#ffd700')"> Sample A</label>
+              <label class="option-label"><input type="radio" name="entry.765228693" value="sample B" onchange="showFB('r3fb6', 'SAMPLE B HAS 3 T\'S, NOT A\'S! 😴', '#ff4d4d')"> Sample B</label>
+              <label class="option-label"><input type="radio" name="entry.765228693" value="sample C" onchange="showFB('r3fb6', 'SAMPLE C HAS ONLY 1 A! 📉', 'yellow')"> Sample C</label>
+              <label class="option-label"><input type="radio" name="entry.765228693" value="All are equal" onchange="showFB('r3fb6', 'COUNT THE A\'S AGAIN! 🔍', '#ff4d4d')"> All are equal</label>
+            </div>
+            <div id="r3fb6" class="feedback-box"></div>
+          </div>
+
+          <!-- Q7 -->
+          <div class="question-block">
+            <label class="question-title">7. DNA'S PASSWORD</label>
+            <p class="prompt-text">Sequence: A T G C A T. "I'll change one letter, nobody notices." Reasonable statement?</p>
+            <span class="hint-text">💡 Hint: Even one letter change in DNA can alter amino acid coding!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.1020404388" value="Changing a DNA base can sometimes change biological information" required onchange="showFB('r3fb7', 'SCIENTIFIC TRUTH UNLOCKED! 🔓', '#ffd700')"> Changing a DNA base can sometimes change biological information</label>
+              <label class="option-label"><input type="radio" name="entry.1020404388" value="DNA doesn't care about changes" onchange="showFB('r3fb7', 'DNA IS SENSITIVE TO CHANGES! 🧬', '#ff4d4d')"> DNA doesn't care about changes</label>
+              <label class="option-label"><input type="radio" name="entry.1020404388" value="DNA is actually a computer password" onchange="showFB('r3fb7', 'IT\'S AN ANALOGY, NOT A REAL PASSWORD! 😂', 'yellow')"> DNA is actually a computer password</label>
+              <label class="option-label"><input type="radio" name="entry.1020404388" value="Every single change immediately kills the organism" onchange="showFB('r3fb7', 'TOO EXTREME! MANY MUTATIONS ARE HARMLESS! 🚨', '#ff4d4d')"> Every single change immediately kills the organism</label>
+            </div>
+            <div id="r3fb7" class="feedback-box"></div>
+          </div>
+
+          <!-- Q8 -->
+          <div class="question-block">
+            <label class="question-title">8. 🧪 DNA → RNA</label>
+            <p class="prompt-text">DNA Template: ATGC. Matching RNA sequence using base-pair rules?</p>
+            <span class="hint-text">💡 Hint: A pairs with U in RNA, T pairs with A, G pairs with C, C pairs with G!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.364009069" value="UACG" required onchange="showFB('r3fb8', 'RNA BASE PAIRING MASTER! 🧬', '#ffd700')"> UACG</label>
+              <label class="option-label"><input type="radio" name="entry.364009069" value="ATGC" onchange="showFB('r3fb8', 'RNA HAS NO T! ❌', '#ff4d4d')"> ATGC</label>
+              <label class="option-label"><input type="radio" name="entry.364009069" value="TACG" onchange="showFB('r3fb8', 'THAT IS DNA COMPLEMENT, NOT RNA! 🧬', 'yellow')"> TACG</label>
+              <label class="option-label"><input type="radio" name="entry.364009069" value="GCAU" onchange="showFB('r3fb8', 'WRONG ALIGNMENT ORDER! 🌀', '#ff4d4d')"> GCAU</label>
+            </div>
+            <div id="r3fb8" class="feedback-box"></div>
+          </div>
+
+          <!-- Q9 -->
+          <div class="question-block">
+            <label class="question-title">9. 🧠 THE MYSTERY SAMPLES</label>
+            <p class="prompt-text">A: 2 G/C | B: 6 G/C | C: 4 G/C. Scientist wants sample with exactly 4 G/C bases?</p>
+            <span class="hint-text">💡 Hint: Look at Sample C's description!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.276730191" value="sample A" required onchange="showFB('r3fb9', 'SAMPLE A HAS ONLY 2! 📉', '#ff4d4d')"> Sample A</label>
+              <label class="option-label"><input type="radio" name="entry.276730191" value="sample B" onchange="showFB('r3fb9', 'SAMPLE B HAS 6! 📈', 'yellow')"> Sample B</label>
+              <label class="option-label"><input type="radio" name="entry.276730191" value="sample C" onchange="showFB('r3fb9', 'EXACT MATCH FOR 4 G/C BASES! 🎯', '#ffd700')"> Sample C</label>
+              <label class="option-label"><input type="radio" name="entry.276730191" value="none of this above" onchange="showFB('r3fb9', 'SAMPLE C MATCHES EXACTLY! 👆', '#ff4d4d')"> None of this above</label>
+            </div>
+            <div id="r3fb9" class="feedback-box"></div>
+          </div>
+
+          <!-- Q10 -->
+          <div class="question-block">
+            <label class="question-title">10. 🏆 FINAL CORALVERSE CHALLENGE</label>
+            <p class="prompt-text">A: ATATAT (0 GC) | B: GGCCAA (4 GC) | C: AATTGC (2 GC). Highest GC bases?</p>
+            <span class="hint-text">💡 Hint: Count G's and C's in Sequence B!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.612984571" value="A" required onchange="showFB('r3fb10', 'A HAS ZERO G AND C! 🌵', '#ff4d4d')"> A</label>
+              <label class="option-label"><input type="radio" name="entry.612984571" value="B" onchange="showFB('r3fb10', 'CORALVERSE CHAMPION DISCOVERED! 🏆👑', '#ffd700')"> B</label>
+              <label class="option-label"><input type="radio" name="entry.612984571" value="C" onchange="showFB('r3fb10', 'C HAS ONLY 2! B HAS 4! 📊', 'yellow')"> C</label>
+              <label class="option-label"><input type="radio" name="entry.612984571" value="All are equal" onchange="showFB('r3fb10', 'COUNT THE G AND C BASES! 🔍', '#ff4d4d')"> All are equal</label>
+            </div>
+            <div id="r3fb10" class="feedback-box"></div>
+          </div>
+
+          <button type="submit" class="submit-btn">SUBMIT GRAND FINALE</button>
+        </form>
+      </div>
+
+      <div id="r3DoneView" class="completion-screen">
+        <h1 class="form-title" style="color: #ffd700; margin-bottom: 10px;">TOURNAMENT COMPLETED! 🏆</h1>
+        <span class="subtitle-badge">GRAND FINALE RESPONSES SUBMITTED</span>
+        <p class="confirm-msg">
+          Congratulations on completing the Coralverse Tournament!<br><br>
+          Please look at the <strong>main stage projector</strong> for the final winner ceremony!
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const storedName = localStorage.getItem('coralverse_name');
+    const storedPhone = localStorage.getItem('coralverse_phone');
+    if (storedName) document.getElementById('nameInput').value = storedName;
+    if (storedPhone) document.getElementById('phoneInput').value = storedPhone;
+
+    const logo = document.getElementById('floating-logo');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) logo.classList.add('scrolled');
+      else logo.classList.remove('scrolled');
+    });
+
+    function showFB(id, msg, color) {
+      const box = document.getElementById(id);
+      box.style.display = 'block'; box.style.color = color;
+      box.style.border = `1px solid ${color}`; box.innerText = msg;
+    }
+
+    function submitRound3(e) {
+      e.preventDefault();
+      const form = document.getElementById('r3Form');
+      const formData = new URLSearchParams(new FormData(form));
+
+      fetch("https://docs.google.com/forms/d/e/1FAIpQLScPINWhRFCoSvFt6_yQ5kcMvFTS-akuC5YygvcY-XAY20V3sg/formResponse", {
+        method: "POST", mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData.toString()
+      }).then(() => showDone()).catch(() => showDone());
+    }
+
+    function showDone() {
+      document.getElementById('quizView').style.display = 'none';
+      document.getElementById('r3DoneView').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

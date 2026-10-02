@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coralverse - Registration</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Press+Start+2P&family=Rajdhani:wght@600;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh; display: flex; justify-content: center; align-items: center;
+      background: radial-gradient(circle at 20% 20%, #0d1b2a, #1b263b, #415a77, #10002b);
+      background-size: 300% 300%; animation: luxuryBG 14s ease infinite;
+      font-family: 'Rajdhani', sans-serif; padding: 20px;
+    }
+
+    @keyframes luxuryBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .neon-card {
+      width: 100%; max-width: 800px; border-radius: 20px; padding: 5px;
+      background: linear-gradient(135deg, #00f2fe, #4facfe, #00ffcc, #7f00ff);
+      box-shadow: 0 0 35px rgba(0, 242, 254, 0.4), 0 0 50px rgba(127, 0, 255, 0.3);
+    }
+
+    .card-inner { background: #0b0c10; border-radius: 16px; padding: 35px 30px; color: #ffffff; }
+    .header-box { text-align: center; margin-bottom: 30px; }
+    .main-title { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; font-weight: 900; letter-spacing: 2px; color: #00ffcc; text-shadow: 0 0 12px rgba(0, 255, 204, 0.8); }
+    .subtitle { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: #ff0055; letter-spacing: 1px; margin-top: 5px; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center; }
+    @media (max-width: 650px) { .form-grid { grid-template-columns: 1fr; gap: 12px; } }
+
+    .field-label { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 700; color: #00f2fe; text-transform: uppercase; }
+    .input-box, select { width: 100%; padding: 14px 16px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.2); background: #e8ecef; color: #12131c; font-size: 1rem; font-weight: 700; outline: none; }
+    .input-box:focus, select:focus { border-color: #00ffcc; box-shadow: 0 0 10px #00ffcc; }
+
+    .submit-btn { grid-column: 1 / -1; margin-top: 20px; padding: 16px; border: none; border-radius: 10px; background: linear-gradient(90deg, #00ff88, #00f2fe); color: #0d0e15; font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 900; cursor: pointer; box-shadow: 0 0 20px rgba(0, 255, 136, 0.6); transition: transform 0.2s ease; }
+    .submit-btn:hover { transform: scale(1.02); }
+
+    .completion-screen { display: none; text-align: center; padding: 20px 10px; }
+    .status-badge { font-family: 'Press Start 2P', monospace; font-size: 0.8rem; color: #00ffcc; margin-bottom: 20px; display: block; }
+    .confirm-msg { font-size: 1.2rem; color: #e0f7fa; line-height: 1.6; margin-bottom: 25px; }
+  </style>
+</head>
+<body>
+
+  <div class="neon-card">
+    <div class="card-inner">
+      
+      <div id="registrationView">
+        <div class="header-box">
+          <h1 class="main-title">CORALVERSE</h1>
+          <div class="subtitle">LET IT COOL : REGISTRATION</div>
+        </div>
+
+        <form id="regForm" onsubmit="handleRegistration(event)">
+          <div class="form-grid">
+            <label class="field-label">CANDIDATE NAME *</label>
+            <input type="text" name="entry.841233851" id="userName" class="input-box" placeholder="Your Full Name" required>
+
+            <label class="field-label">PHONE NUMBER *</label>
+            <input type="tel" name="entry.5477643" id="userPhone" class="input-box" placeholder="10-digit Phone Number" pattern="[0-9]{10}" required>
+
+            <label class="field-label">ACADEMIC DIVISION / CLASS *</label>
+            <select name="entry.1900007617" class="input-box" required>
+              <option value="" disabled selected>Choose class</option>
+              <option value="Class 8 👾 Oceanic Biology">Class 8 👾 Oceanic Biology</option>
+              <option value="Class 9 👾 Cellular Genetics">Class 9 👾 Cellular Genetics</option>
+              <option value="Class 10 👾 Molecular Bioinformatics">Class 10 👾 Molecular Bioinformatics</option>
+              <option value="class 11 👾 Deep-sea Gene Splicing">Class 11 👾 Deep-sea Gene Splicing</option>
+              <option value="class 12 👾 Advance Marine Genomics">Class 12 👾 Advance Marine Genomics</option>
+              <option value="College / Degree">College / Degree</option>
+            </select>
+
+            <label class="field-label">INSTITUTION / SCHOOL *</label>
+            <input type="text" name="entry.442738639" class="input-box" placeholder="Your School or Institution" required>
+
+            <button type="submit" class="submit-btn">SUBMIT REGISTRATION</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="confirmationView" class="completion-screen">
+        <h1 class="main-title" style="margin-bottom: 10px;">REGISTRATION SUCCESSFUL! 🎉</h1>
+        <span class="status-badge">STATUS: CONFIRMED & LOGGED</span>
+        <p class="confirm-msg">
+          Your candidate details have been successfully recorded.<br><br>
+          <strong>NEXT STEP:</strong> Scan the <strong>ROUND 1 QR CODE</strong> displayed on the host projector screen when Round 1 begins!
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function handleRegistration(e) {
+      e.preventDefault();
+      const name = document.getElementById('userName').value.trim();
+      const phone = document.getElementById('userPhone').value.trim();
+      
+      localStorage.setItem('coralverse_name', name);
+      localStorage.setItem('coralverse_phone', phone);
+
+      const formData = new URLSearchParams(new FormData(document.getElementById('regForm')));
+
+      fetch("https://docs.google.com/forms/d/e/1FAIpQLSdP6comfjkk5imOTfxdSRzhMKBJg7S-eKHvGzdQz9qYFSvyUw/formResponse", {
+        method: "POST", mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData.toString()
+      }).then(() => showConfirmation()).catch(() => showConfirmation());
+    }
+
+    function showConfirmation() {
+      document.getElementById('registrationView').style.display = 'none';
+      document.getElementById('confirmationView').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
