@@ -39,6 +39,17 @@
     .form-title { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; color: #ffffff; text-align: center; text-shadow: 0 0 10px #ff0055; }
     .subtitle-badge { font-family: 'Press Start 2P', monospace; font-size: 0.75rem; color: #ff0055; text-align: center; margin-bottom: 25px; display: block; }
 
+    /* Lobby View Styling */
+    .lobby-box { text-align: center; padding: 20px 10px; }
+    .lobby-msg { font-size: 1.1rem; color: #e0f7fa; line-height: 1.6; margin: 20px 0; }
+    .passcode-input {
+      width: 100%; max-width: 280px; padding: 14px; border-radius: 8px; border: 2px solid #ff0055;
+      background: #e8ecef; color: #12131c; font-size: 1.2rem; font-weight: 900; text-align: center;
+      outline: none; margin-bottom: 15px; font-family: 'Orbitron', sans-serif; letter-spacing: 2px;
+    }
+
+    /* Quiz View Styling */
+    #quizView { display: none; }
     .user-block { background: rgba(255, 0, 85, 0.1); border: 1px solid #ff0055; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
     .user-block label { font-family: 'Orbitron', sans-serif; color: #ff0055; font-size: 0.8rem; display: block; margin-bottom: 6px; }
     .user-input { width: 100%; padding: 10px; border-radius: 6px; border: none; background: #e8ecef; font-weight: 700; color: #12131c; }
@@ -49,8 +60,19 @@
     .hint-text { color: #ffd700; font-size: 0.88rem; font-style: italic; margin-bottom: 12px; display: block; }
 
     .option-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-    .option-label { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.05); padding: 12px 16px; border-radius: 8px; cursor: pointer; color: #c2e7ff; transition: all 0.2s ease; }
+    .option-label { 
+      display: flex; align-items: center; gap: 10px; 
+      background: rgba(255, 255, 255, 0.05); padding: 12px 16px; 
+      border-radius: 8px; cursor: pointer; color: #c2e7ff; 
+      transition: all 0.2s ease; border: 1px solid transparent;
+    }
     .option-label:hover { border-color: #ff0055; background: rgba(255, 0, 85, 0.15); }
+
+    /* 4 Distinct Selection Colors */
+    .option-label.opt-a-selected { background: rgba(255, 87, 34, 0.3) !important; border-color: #FF5722 !important; color: #ffffff !important; font-weight: bold; }
+    .option-label.opt-b-selected { background: rgba(76, 175, 80, 0.3) !important; border-color: #4CAF50 !important; color: #ffffff !important; font-weight: bold; }
+    .option-label.opt-c-selected { background: rgba(33, 150, 243, 0.3) !important; border-color: #2196F3 !important; color: #ffffff !important; font-weight: bold; }
+    .option-label.opt-d-selected { background: rgba(156, 39, 176, 0.3) !important; border-color: #9C27B0 !important; color: #ffffff !important; font-weight: bold; }
 
     .feedback-box { display: none; margin-top: 10px; padding: 10px; border-radius: 6px; font-weight: 700; font-family: 'Press Start 2P', monospace; font-size: 0.75rem; }
 
@@ -66,6 +88,21 @@
   <div class="neon-card">
     <div class="card-inner">
 
+      <!-- LOBBY SCREEN -->
+      <div id="lobbyView" class="lobby-box">
+        <h1 class="form-title">CORALVERSE</h1>
+        <span class="subtitle-badge">ROUND 2 : LOBBY LOCKED ⏳</span>
+        <p class="lobby-msg">
+          Welcome Semi-Finalists!<br><br>
+          Please wait for the host to announce the <strong>Access Code</strong> on the stage screen to enter Round 2.
+        </p>
+        <div>
+          <input type="password" id="passcodeInput" class="passcode-input" placeholder="ENTER CODE" maxlength="12">
+          <button type="button" class="submit-btn" onclick="unlockLobby()" style="max-width: 280px; margin: 0 auto; display: block;">UNLOCK ROUND 2</button>
+        </div>
+      </div>
+
+      <!-- QUIZ VIEW -->
       <div id="quizView">
         <h1 class="form-title">CORALVERSE</h1>
         <span class="subtitle-badge">ROUND 2 : SEMI-FINALS (10 MCQs)</span>
@@ -88,10 +125,10 @@
             <p class="prompt-text">Original: ATG CCA TGC GTA. Find the sequence where the 2nd codon 'CCA' changed to 'CAA':</p>
             <span class="hint-text">💡 Hint: Look at the middle codon 'CCA'!</span>
             <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.1223759351" value="ATG CAA TGC GTA" required onchange="showFB('r2fb1', 'SPOT-ON DETECTIVE! 🔍', '#ff0055')"> ATG CAA TGC GTA</label>
-              <label class="option-label"><input type="radio" name="entry.1223759351" value="ATG CCA TGC GTA" onchange="showFB('r2fb1', 'THAT IS UNCHANGED! 😴', '#ff4d4d')"> ATG CCA TGC GTA</label>
-              <label class="option-label"><input type="radio" name="entry.1223759351" value="ATG CCA TGA GTA" onchange="showFB('r2fb1', '3RD CODON CHANGED HERE! ❌', 'yellow')"> ATG CCA TGA GTA</label>
-              <label class="option-label"><input type="radio" name="entry.1223759351" value="ATG ACA TGC GTA" onchange="showFB('r2fb1', 'THAT IS ACA, NOT CAA! 🌀', '#ff4d4d')"> ATG ACA TGC GTA</label>
+              <label class="option-label"><input type="radio" name="entry.1223759351" value="ATG CAA TGC GTA" required onchange="handleOptionSelect(this, 'r2fb1', 'SPOT-ON DETECTIVE! 🔍', '#FF5722', 'opt-a-selected')"> ATG CAA TGC GTA</label>
+              <label class="option-label"><input type="radio" name="entry.1223759351" value="ATG CCA TGC GTA" onchange="handleOptionSelect(this, 'r2fb1', 'THAT IS UNCHANGED! 😴', '#4CAF50', 'opt-b-selected')"> ATG CCA TGC GTA</label>
+              <label class="option-label"><input type="radio" name="entry.1223759351" value="ATG CCA TGA GTA" onchange="handleOptionSelect(this, 'r2fb1', '3RD CODON CHANGED HERE! ❌', '#2196F3', 'opt-c-selected')"> ATG CCA TGA GTA</label>
+              <label class="option-label"><input type="radio" name="entry.1223759351" value="ATG ACA TGC GTA" onchange="handleOptionSelect(this, 'r2fb1', 'THAT IS ACA, NOT CAA! 🌀', '#9C27B0', 'opt-d-selected')"> ATG ACA TGC GTA</label>
             </div>
             <div id="r2fb1" class="feedback-box"></div>
           </div>
@@ -102,10 +139,10 @@
             <p class="prompt-text">Which sequence contains the highest percentage of G and C?</p>
             <span class="hint-text">💡 Hint: Count total 'G's and 'C's out of 8 letters!</span>
             <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.221609537" value="ATATATGC" required onchange="showFB('r2fb2', 'ONLY 2 GC BASES! LOW! 📉', '#ff4d4d')"> ATATATGC</label>
-              <label class="option-label"><input type="radio" name="entry.221609537" value="GGCCATAT" onchange="showFB('r2fb2', '4 OUT OF 8 = 50%! GOOD! 📊', 'yellow')"> GGCCATAT</label>
-              <label class="option-label"><input type="radio" name="entry.221609537" value="AATTGGCC" onchange="showFB('r2fb2', 'TIED AT 50%! 🧪', 'yellow')"> AATTGGCC</label>
-              <label class="option-label"><input type="radio" name="entry.221609537" value="ATATATAT" onchange="showFB('r2fb2', 'ZERO G OR C! 🌵', '#ff4d4d')"> ATATATAT</label>
+              <label class="option-label"><input type="radio" name="entry.221609537" value="ATATATGC" required onchange="handleOptionSelect(this, 'r2fb2', 'ONLY 2 GC BASES! LOW! 📉', '#FF5722', 'opt-a-selected')"> ATATATGC</label>
+              <label class="option-label"><input type="radio" name="entry.221609537" value="GGCCATAT" onchange="handleOptionSelect(this, 'r2fb2', '4 OUT OF 8 = 50%! GOOD! 📊', '#4CAF50', 'opt-b-selected')"> GGCCATAT</label>
+              <label class="option-label"><input type="radio" name="entry.221609537" value="AATTGGCC" onchange="handleOptionSelect(this, 'r2fb2', 'TIED AT 50%! 🧪', '#2196F3', 'opt-c-selected')"> AATTGGCC</label>
+              <label class="option-label"><input type="radio" name="entry.221609537" value="ATATATAT" onchange="handleOptionSelect(this, 'r2fb2', 'ZERO G OR C! 🌵', '#9C27B0', 'opt-d-selected')"> ATATATAT</label>
             </div>
             <div id="r2fb2" class="feedback-box"></div>
           </div>
@@ -116,10 +153,10 @@
             <p class="prompt-text">Computer learns disease patterns from DNA sequences. What technology is used?</p>
             <span class="hint-text">💡 Hint: The branch of AI where algorithms learn from data!</span>
             <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.1587620719" value="Machine Learning" required onchange="showFB('r2fb3', 'AI REVOLUTION IN BIO! 🤖', '#ff0055')"> Machine Learning</label>
-              <label class="option-label"><input type="radio" name="entry.1587620719" value="Photosynthesis" onchange="showFB('r2fb3', 'PLANTS DO THAT, NOT COMPUTERS! 🌿', '#ff4d4d')"> Photosynthesis</label>
-              <label class="option-label"><input type="radio" name="entry.1587620719" value="PCR" onchange="showFB('r2fb3', 'PCR AMPLIFIES DNA! 🧪', 'yellow')"> PCR</label>
-              <label class="option-label"><input type="radio" name="entry.1587620719" value="Microscopy" onchange="showFB('r2fb3', 'MICROSCOPES MAGNIFY, NOT LEARN! 🔬', '#ff4d4d')"> Microscopy</label>
+              <label class="option-label"><input type="radio" name="entry.1587620719" value="Machine Learning" required onchange="handleOptionSelect(this, 'r2fb3', 'AI REVOLUTION IN BIO! 🤖', '#FF5722', 'opt-a-selected')"> Machine Learning</label>
+              <label class="option-label"><input type="radio" name="entry.1587620719" value="Photosynthesis" onchange="handleOptionSelect(this, 'r2fb3', 'PLANTS DO THAT, NOT COMPUTERS! 🌿', '#4CAF50', 'opt-b-selected')"> Photosynthesis</label>
+              <label class="option-label"><input type="radio" name="entry.1587620719" value="PCR" onchange="handleOptionSelect(this, 'r2fb3', 'PCR AMPLIFIES DNA! 🧪', '#2196F3', 'opt-c-selected')"> PCR</label>
+              <label class="option-label"><input type="radio" name="entry.1587620719" value="Microscopy" onchange="handleOptionSelect(this, 'r2fb3', 'MICROSCOPES MAGNIFY, NOT LEARN! 🔬', '#9C27B0', 'opt-d-selected')"> Microscopy</label>
             </div>
             <div id="r2fb3" class="feedback-box"></div>
           </div>
@@ -130,10 +167,10 @@
             <p class="prompt-text">RNA sequence: AUG CCA UGC. Friend says: "You forgot the letter T!" Who is correct?</p>
             <span class="hint-text">💡 Hint: Does RNA contain Thymine (T) or Uracil (U)?</span>
             <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.1933342060" value="The student" required onchange="showFB('r2fb4', 'RNA USES URACIL (U), NOT THYMINE (T)! 🧠', '#ff0055')"> The student</label>
-              <label class="option-label"><input type="radio" name="entry.1933342060" value="the friend" onchange="showFB('r2fb4', 'THE FRIEND NEEDS TO STUDY BIO! 😂', '#ff4d4d')"> The friend</label>
-              <label class="option-label"><input type="radio" name="entry.1933342060" value="both" onchange="showFB('r2fb4', 'ONLY ONE CAN BE RIGHT! ⚔️', 'yellow')"> Both</label>
-              <label class="option-label"><input type="radio" name="entry.1933342060" value="neither" onchange="showFB('r2fb4', 'NOPE, STUDENT IS RIGHT! ❌', '#ff4d4d')"> Neither</label>
+              <label class="option-label"><input type="radio" name="entry.1933342060" value="The student" required onchange="handleOptionSelect(this, 'r2fb4', 'RNA USES URACIL (U), NOT THYMINE (T)! 🧠', '#FF5722', 'opt-a-selected')"> The student</label>
+              <label class="option-label"><input type="radio" name="entry.1933342060" value="the friend" onchange="handleOptionSelect(this, 'r2fb4', 'THE FRIEND NEEDS TO STUDY BIO! 😂', '#4CAF50', 'opt-b-selected')"> The friend</label>
+              <label class="option-label"><input type="radio" name="entry.1933342060" value="both" onchange="handleOptionSelect(this, 'r2fb4', 'ONLY ONE CAN BE RIGHT! ⚔️', '#2196F3', 'opt-c-selected')"> Both</label>
+              <label class="option-label"><input type="radio" name="entry.1933342060" value="neither" onchange="handleOptionSelect(this, 'r2fb4', 'NOPE, STUDENT IS RIGHT! ❌', '#9C27B0', 'opt-d-selected')"> Neither</label>
             </div>
             <div id="r2fb4" class="feedback-box"></div>
           </div>
@@ -144,10 +181,10 @@
             <p class="prompt-text">Famous tool for searching sequence similarity in biological databases?</p>
             <span class="hint-text">💡 Hint: Basic Local Alignment Search Tool!</span>
             <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.153993137" value="BLAST" required onchange="showFB('r2fb5', 'BLAST OFF INTO DATA! 🚀', '#ff0055')"> BLAST</label>
-              <label class="option-label"><input type="radio" name="entry.153993137" value="GOOGLE" onchange="showFB('r2fb5', 'GOOGLE IS FOR WEBSITES, NOT GENOMES! 🌐', 'yellow')"> GOOGLE</label>
-              <label class="option-label"><input type="radio" name="entry.153993137" value="PHOTOSHOP" onchange="showFB('r2fb5', 'PHOTOSHOP IS FOR IMAGES! 🎨', '#ff4d4d')"> PHOTOSHOP</label>
-              <label class="option-label"><input type="radio" name="entry.153993137" value="CALCULATER" onchange="showFB('r2fb5', 'CALCULATOR DOES MATH, NOT BLAST! 🧮', '#ff4d4d')"> CALCULATOR</label>
+              <label class="option-label"><input type="radio" name="entry.153993137" value="BLAST" required onchange="handleOptionSelect(this, 'r2fb5', 'BLAST OFF INTO DATA! 🚀', '#FF5722', 'opt-a-selected')"> BLAST</label>
+              <label class="option-label"><input type="radio" name="entry.153993137" value="GOOGLE" onchange="handleOptionSelect(this, 'r2fb5', 'GOOGLE IS FOR WEBSITES, NOT GENOMES! 🌐', '#4CAF50', 'opt-b-selected')"> GOOGLE</label>
+              <label class="option-label"><input type="radio" name="entry.153993137" value="PHOTOSHOP" onchange="handleOptionSelect(this, 'r2fb5', 'PHOTOSHOP IS FOR IMAGES! 🎨', '#2196F3', 'opt-c-selected')"> PHOTOSHOP</label>
+              <label class="option-label"><input type="radio" name="entry.153993137" value="CALCULATER" onchange="handleOptionSelect(this, 'r2fb5', 'CALCULATOR DOES MATH, NOT BLAST! 🧮', '#9C27B0', 'opt-d-selected')"> CALCULATOR</label>
             </div>
             <div id="r2fb5" class="feedback-box"></div>
           </div>
@@ -158,10 +195,10 @@
             <p class="prompt-text">Team A: ATATATAT | Team B: GGCGCCGC | Team C: ATGCATGC. Highest GC content?</p>
             <span class="hint-text">💡 Hint: Count how many Gs and Cs Team B has compared to A and C!</span>
             <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.745942937" value="Team A" required onchange="showFB('r2fb6', 'TEAM A HAS 0% GC! 🚨', '#ff4d4d')"> Team A</label>
-              <label class="option-label"><input type="radio" name="entry.745942937" value="Team B" onchange="showFB('r2fb6', '100% GC CONTENT! UNSTOPPABLE! 🏆', '#ff0055')"> Team B</label>
-              <label class="option-label"><input type="radio" name="entry.745942937" value="Team C" onchange="showFB('r2fb6', 'TEAM C HAS ONLY 50%! 📊', 'yellow')"> Team C</label>
-              <label class="option-label"><input type="radio" name="entry.745942937" value="All are equal" onchange="showFB('r2fb6', 'LOOK AT TEAM B AGAIN! 🔍', '#ff4d4d')"> All are equal</label>
+              <label class="option-label"><input type="radio" name="entry.745942937" value="Team A" required onchange="handleOptionSelect(this, 'r2fb6', 'TEAM A HAS 0% GC! 🚨', '#FF5722', 'opt-a-selected')"> Team A</label>
+              <label class="option-label"><input type="radio" name="entry.745942937" value="Team B" onchange="handleOptionSelect(this, 'r2fb6', '100% GC CONTENT! UNSTOPPABLE! 🏆', '#4CAF50', 'opt-b-selected')"> Team B</label>
+              <label class="option-label"><input type="radio" name="entry.745942937" value="Team C" onchange="handleOptionSelect(this, 'r2fb6', 'TEAM C HAS ONLY 50%! 📊', '#2196F3', 'opt-c-selected')"> Team C</label>
+              <label class="option-label"><input type="radio" name="entry.745942937" value="All are equal" onchange="handleOptionSelect(this, 'r2fb6', 'LOOK AT TEAM B AGAIN! 🔍', '#9C27B0', 'opt-d-selected')"> All are equal</label>
             </div>
             <div id="r2fb6" class="feedback-box"></div>
           </div>
@@ -172,10 +209,10 @@
             <p class="prompt-text">DNA mutation occurs, but protein remains unchanged. Mutation type?</p>
             <span class="hint-text">💡 Hint: Since there is no visible effect or sound... it's quiet!</span>
             <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.300373291" value="silent mutation" required onchange="showFB('r2fb7', 'SILENT BUT POWERFUL! 🤫', '#ff0055')"> Silent mutation</label>
-              <label class="option-label"><input type="radio" name="entry.300373291" value="Frameshift mutation" onchange="showFB('r2fb7', 'FRAMESHIFT CHANGES EVERYTHING! 💥', '#ff4d4d')"> Frameshift mutation</label>
-              <label class="option-label"><input type="radio" name="entry.300373291" value="nonsence mutation" onchange="showFB('r2fb7', 'NONSENSE STOPS PROTEIN EARLY! 🛑', 'yellow')"> Nonsense mutation</label>
-              <label class="option-label"><input type="radio" name="entry.300373291" value="Deletion" onchange="showFB('r2fb7', 'DELETION SHIFTS THE FRAME! ❌', '#ff4d4d')"> Deletion</label>
+              <label class="option-label"><input type="radio" name="entry.300373291" value="silent mutation" required onchange="handleOptionSelect(this, 'r2fb7', 'SILENT BUT POWERFUL! 🤫', '#FF5722', 'opt-a-selected')"> Silent mutation</label>
+              <label class="option-label"><input type="radio" name="entry.300373291" value="Frameshift mutation" onchange="handleOptionSelect(this, 'r2fb7', 'FRAMESHIFT CHANGES EVERYTHING! 💥', '#4CAF50', 'opt-b-selected')"> Frameshift mutation</label>
+              <label class="option-label"><input type="radio" name="entry.300373291" value="nonsence mutation" onchange="handleOptionSelect(this, 'r2fb7', 'NONSENSE STOPS PROTEIN EARLY! 🛑', '#2196F3', 'opt-c-selected')"> Nonsense mutation</label>
+              <label class="option-label"><input type="radio" name="entry.300373291" value="Deletion" onchange="handleOptionSelect(this, 'r2fb7', 'DELETION SHIFTS THE FRAME! ❌', '#9C27B0', 'opt-d-selected')"> Deletion</label>
             </div>
             <div id="r2fb7" class="feedback-box"></div>
           </div>
@@ -186,10 +223,10 @@
             <p class="prompt-text">Matches: A→98%, B→75%, C→42%. Researcher says "98%! DONE!". What to actually do?</p>
             <span class="hint-text">💡 Hint: Good scientists double-check biological context before deciding!</span>
             <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.71017539" value="Immediately accept it" required onchange="showFB('r2fb8', 'NEVER TRUST 2 AM DECISIONS! 😴', '#ff4d4d')"> Immediately accept it</label>
-              <label class="option-label"><input type="radio" name="entry.71017539" value="Check other evidence before deciding" onchange="showFB('r2fb8', 'TRUE SCIENTIFIC RIGOR! 🔬', '#ff0055')"> Check other evidence before deciding</label>
-              <label class="option-label"><input type="radio" name="entry.71017539" value="Delete the other results" onchange="showFB('r2fb8', 'NEVER DELETE DATA! 🚨', '#ff4d4d')"> Delete the other results</label>
-              <label class="option-label"><input type="radio" name="entry.71017539" value="Choose randomly" onchange="showFB('r2fb8', 'SCIENCE IS NOT A GAMBLE! 🎲', 'yellow')"> Choose randomly</label>
+              <label class="option-label"><input type="radio" name="entry.71017539" value="Immediately accept it" required onchange="handleOptionSelect(this, 'r2fb8', 'NEVER TRUST 2 AM DECISIONS! 😴', '#FF5722', 'opt-a-selected')"> Immediately accept it</label>
+              <label class="option-label"><input type="radio" name="entry.71017539" value="Check other evidence before deciding" onchange="handleOptionSelect(this, 'r2fb8', 'TRUE SCIENTIFIC RIGOR! 🔬', '#4CAF50', 'opt-b-selected')"> Check other evidence before deciding</label>
+              <label class="option-label"><input type="radio" name="entry.71017539" value="Delete the other results" onchange="handleOptionSelect(this, 'r2fb8', 'NEVER DELETE DATA! 🚨', '#2196F3', 'opt-c-selected')"> Delete the other results</label>
+              <label class="option-label"><input type="radio" name="entry.71017539" value="Choose randomly" onchange="handleOptionSelect(this, 'r2fb8', 'SCIENCE IS NOT A GAMBLE! 🎲', '#9C27B0', 'opt-d-selected')"> Choose randomly</label>
             </div>
             <div id="r2fb8" class="feedback-box"></div>
           </div>
@@ -200,10 +237,10 @@
             <p class="prompt-text">Need to find a sequence among 1 billion DNA letters. Most sensible approach?</p>
             <span class="hint-text">💡 Hint: 1 billion letters would fill 300,000 pages!</span>
             <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.2096403617" value="Read them manually" required onchange="showFB('r2fb9', 'YOU WOULD FINISH IN 80 YEARS! 👴', '#ff4d4d')"> Read them manually</label>
-              <label class="option-label"><input type="radio" name="entry.2096403617" value="Use a computer algorithm" onchange="showFB('r2fb9', 'FINISHES IN 0.01 SECONDS! ⚡', '#ff0055')"> Use a computer algorithm</label>
-              <label class="option-label"><input type="radio" name="entry.2096403617" value="Print them all and highlight them" onchange="showFB('r2fb9', 'SAVE THE TREES! 🌲', 'yellow')"> Print them all and highlight them</label>
-              <label class="option-label"><input type="radio" name="entry.2096403617" value="Ask your classmates to search" onchange="showFB('r2fb9', 'YOUR CLASSMATES WILL HATE YOU! 😂', '#ff4d4d')"> Ask your classmates to search</label>
+              <label class="option-label"><input type="radio" name="entry.2096403617" value="Read them manually" required onchange="handleOptionSelect(this, 'r2fb9', 'YOU WOULD FINISH IN 80 YEARS! 👴', '#FF5722', 'opt-a-selected')"> Read them manually</label>
+              <label class="option-label"><input type="radio" name="entry.2096403617" value="Use a computer algorithm" onchange="handleOptionSelect(this, 'r2fb9', 'FINISHES IN 0.01 SECONDS! ⚡', '#4CAF50', 'opt-b-selected')"> Use a computer algorithm</label>
+              <label class="option-label"><input type="radio" name="entry.2096403617" value="Print them all and highlight them" onchange="handleOptionSelect(this, 'r2fb9', 'SAVE THE TREES! 🌲', '#2196F3', 'opt-c-selected')"> Print them all and highlight them</label>
+              <label class="option-label"><input type="radio" name="entry.2096403617" value="Ask your classmates to search" onchange="handleOptionSelect(this, 'r2fb9', 'YOUR CLASSMATES WILL HATE YOU! 😂', '#9C27B0', 'opt-d-selected')"> Ask your classmates to search</label>
             </div>
             <div id="r2fb9" class="feedback-box"></div>
           </div>
@@ -214,18 +251,19 @@
             <p class="prompt-text">"If DNA has a mutation, the organism MUST have a completely different protein." Correct?</p>
             <span class="hint-text">💡 Hint: Remember Silent Mutations from Question 7!</span>
             <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.952503403" value="Yes, every mutation changes a protein" required onchange="showFB('r2fb10', 'INCORRECT, THINK SILENT MUTATIONS! 🛑', '#ff4d4d')"> Yes, every mutation changes a protein</label>
-              <label class="option-label"><input type="radio" name="entry.952503403" value="No, some mutations may have little or no effect on the protein" onchange="showFB('r2fb10', 'GENOMIC WISDOM UNLOCKED! 🎓🏆', '#ff0055')"> No, some mutations may have little or no effect on the protein</label>
-              <label class="option-label"><input type="radio" name="entry.952503403" value="Yes, because DNA directly becomes protein" onchange="showFB('r2fb10', 'DNA MAKES RNA FIRST! 🧬', 'yellow')"> Yes, because DNA directly becomes protein</label>
-              <label class="option-label"><input type="radio" name="entry.952503403" value="No, because DNA has nothing to do with proteins" onchange="showFB('r2fb10', 'DNA IS THE CODE FOR PROTEINS! 🚨', '#ff4d4d')"> No, because DNA has nothing to do with proteins</label>
+              <label class="option-label"><input type="radio" name="entry.952503403" value="Yes, every mutation changes a protein" required onchange="handleOptionSelect(this, 'r2fb10', 'INCORRECT, THINK SILENT MUTATIONS! 🛑', '#FF5722', 'opt-a-selected')"> Yes, every mutation changes a protein</label>
+              <label class="option-label"><input type="radio" name="entry.952503403" value="No, some mutations may have little or no effect on the protein" onchange="handleOptionSelect(this, 'r2fb10', 'GENOMIC WISDOM UNLOCKED! 🎓🏆', '#4CAF50', 'opt-b-selected')"> No, some mutations may have little or no effect on the protein</label>
+              <label class="option-label"><input type="radio" name="entry.952503403" value="Yes, because DNA directly becomes protein" onchange="handleOptionSelect(this, 'r2fb10', 'DNA MAKES RNA FIRST! 🧬', '#2196F3', 'opt-c-selected')"> Yes, because DNA directly becomes protein</label>
+              <label class="option-label"><input type="radio" name="entry.952503403" value="No, because DNA has nothing to do with proteins" onchange="handleOptionSelect(this, 'r2fb10', 'DNA IS THE CODE FOR PROTEINS! 🚨', '#9C27B0', 'opt-d-selected')"> No, because DNA has nothing to do with proteins</label>
             </div>
             <div id="r2fb10" class="feedback-box"></div>
           </div>
 
-          <button type="submit" class="submit-btn">SUBMIT ROUND 2</button>
+          <button type="submit" id="submit-btn" class="submit-btn">SUBMIT ROUND 2</button>
         </form>
       </div>
 
+      <!-- DONE SCREEN -->
       <div id="r2DoneView" class="completion-screen">
         <h1 class="form-title" style="color: #ff0055; margin-bottom: 10px;">ROUND 2 COMPLETED! 🔥</h1>
         <span class="subtitle-badge">SEMI-FINALS LOGGED</span>
@@ -239,6 +277,17 @@
   </div>
 
   <script>
+    // Unique Passcode for Round 2
+    const PASSCODE_ROUND2 = "SEMI2026";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem("coralverse_round2_completed") === "true") {
+        showDone();
+      } else if (localStorage.getItem("coralverse_round2_unlocked") === "true") {
+        showQuiz();
+      }
+    });
+
     const storedName = localStorage.getItem('coralverse_name');
     const storedPhone = localStorage.getItem('coralverse_phone');
     if (storedName) document.getElementById('nameInput').value = storedName;
@@ -250,14 +299,41 @@
       else logo.classList.remove('scrolled');
     });
 
-    function showFB(id, msg, color) {
-      const box = document.getElementById(id);
-      box.style.display = 'block'; box.style.color = color;
-      box.style.border = `1px solid ${color}`; box.innerText = msg;
+    function unlockLobby() {
+      const input = document.getElementById("passcodeInput").value.trim();
+      if (input === PASSCODE_ROUND2) {
+        localStorage.setItem("coralverse_round2_unlocked", "true");
+        showQuiz();
+      } else {
+        alert("Incorrect Access Code! Please wait for the host to announce it.");
+      }
+    }
+
+    function showQuiz() {
+      document.getElementById('lobbyView').style.display = 'none';
+      document.getElementById('quizView').style.display = 'block';
+    }
+
+    function handleOptionSelect(radioInput, feedbackId, msg, color, colorClass) {
+      const box = document.getElementById(feedbackId);
+      box.style.display = 'block'; 
+      box.style.color = color;
+      box.style.border = `1px solid ${color}`; 
+      box.innerText = msg;
+
+      const parentGroup = radioInput.closest('.option-group');
+      const allLabels = parentGroup.querySelectorAll('.option-label');
+      allLabels.forEach(lbl => {
+        lbl.classList.remove('opt-a-selected', 'opt-b-selected', 'opt-c-selected', 'opt-d-selected');
+      });
+
+      radioInput.closest('.option-label').classList.add(colorClass);
     }
 
     function submitRound2(e) {
       e.preventDefault();
+      localStorage.setItem("coralverse_round2_completed", "true");
+
       const form = document.getElementById('r2Form');
       const formData = new URLSearchParams(new FormData(form));
 
@@ -269,6 +345,7 @@
     }
 
     function showDone() {
+      document.getElementById('lobbyView').style.display = 'none';
       document.getElementById('quizView').style.display = 'none';
       document.getElementById('r2DoneView').style.display = 'block';
     }
