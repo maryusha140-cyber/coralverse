@@ -39,6 +39,17 @@
     .form-title { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; color: #ffffff; text-align: center; text-shadow: 0 0 10px #00f2fe; }
     .subtitle-badge { font-family: 'Press Start 2P', monospace; font-size: 0.75rem; color: #00ffcc; text-align: center; margin-bottom: 25px; display: block; }
 
+    /* Lobby View Styling */
+    .lobby-box { text-align: center; padding: 20px 10px; }
+    .lobby-msg { font-size: 1.1rem; color: #e0f7fa; line-height: 1.6; margin: 20px 0; }
+    .passcode-input {
+      width: 100%; max-width: 280px; padding: 14px; border-radius: 8px; border: 2px solid #00f2fe;
+      background: #e8ecef; color: #12131c; font-size: 1.2rem; font-weight: 900; text-align: center;
+      outline: none; margin-bottom: 15px; font-family: 'Orbitron', sans-serif; letter-spacing: 2px;
+    }
+
+    /* Quiz Form Styling */
+    #quizView { display: none; }
     .user-block { background: rgba(0, 242, 254, 0.1); border: 1px solid #00f2fe; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
     .user-block label { font-family: 'Orbitron', sans-serif; color: #00ffcc; font-size: 0.8rem; display: block; margin-bottom: 6px; }
     .user-input { width: 100%; padding: 10px; border-radius: 6px; border: none; background: #e8ecef; font-weight: 700; color: #12131c; }
@@ -50,7 +61,6 @@
 
     .option-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
     
-    /* Option Label Base Style */
     .option-label { 
       display: flex; align-items: center; gap: 10px; 
       background: rgba(255, 255, 255, 0.05); padding: 12px 16px; 
@@ -60,7 +70,7 @@
     }
     .option-label:hover { border-color: #00f2fe; background: rgba(0, 242, 254, 0.15); }
 
-    /* BUG FIX 4: 4 Distinct Selection Colors for clicked options */
+    /* 4 Distinct Selection Colors for clicked options */
     .option-label.opt-a-selected { background: rgba(255, 87, 34, 0.3) !important; border-color: #FF5722 !important; color: #ffffff !important; font-weight: bold; }
     .option-label.opt-b-selected { background: rgba(76, 175, 80, 0.3) !important; border-color: #4CAF50 !important; color: #ffffff !important; font-weight: bold; }
     .option-label.opt-c-selected { background: rgba(33, 150, 243, 0.3) !important; border-color: #2196F3 !important; color: #ffffff !important; font-weight: bold; }
@@ -80,6 +90,21 @@
   <div class="neon-card">
     <div class="card-inner">
 
+      <!-- 1. LOBBY WAITING SCREEN -->
+      <div id="lobbyView" class="lobby-box">
+        <h1 class="form-title">CORALVERSE</h1>
+        <span class="subtitle-badge">ROUND 1 : LOBBY LOCKED ⏳</span>
+        <p class="lobby-msg">
+          Welcome! You are currently in the waiting room.<br><br>
+          Please wait for the host to announce the <strong>Access Code</strong> on the projector screen to unlock Round 1!
+        </p>
+        <div>
+          <input type="password" id="passcodeInput" class="passcode-input" placeholder="ENTER CODE" maxlength="10">
+          <button type="button" class="submit-btn" onclick="unlockLobby()" style="max-width: 280px; margin: 0 auto; display: block;">UNLOCK ROUND 1</button>
+        </div>
+      </div>
+
+      <!-- 2. LIVE QUIZ VIEW -->
       <div id="quizView">
         <h1 class="form-title">CORALVERSE</h1>
         <span class="subtitle-badge">ROUND 1 : SCREENING (10 MCQs)</span>
@@ -96,7 +121,7 @@
             </div>
           </div>
 
-          <!-- Q1: UPDATED CELLULAR POWERHOUSE QUESTION -->
+          <!-- Q1 -->
           <div class="question-block">
             <label class="question-title">1. 🧬 CELLULAR POWERHOUSE</label>
             <p class="prompt-text">Which organelle is responsible for producing ATP energy in the cell?</p>
@@ -240,6 +265,7 @@
         </form>
       </div>
 
+      <!-- 3. COMPLETION VIEW -->
       <div id="r1DoneView" class="completion-screen">
         <h1 class="form-title" style="color: #00ffcc; margin-bottom: 10px;">ROUND 1 COMPLETED! 🚀</h1>
         <span class="subtitle-badge">ANSWERS SUBMITTED SUCCESSFULLY</span>
@@ -253,48 +279,69 @@
   </div>
 
   <script>
-    // BUG FIX 1: Check if already completed on page load/refresh
+    // Secret Passcode for Round 1
+    const PASSCODE_ROUND1 = "2026";
+
+    // 1. Check if already completed on page load or refresh
     document.addEventListener("DOMContentLoaded", () => {
       if (localStorage.getItem("coralverse_round1_completed") === "true") {
         showDone();
+      } else if (localStorage.getItem("coralverse_round1_unlocked") === "true") {
+        // If student unlocked it previously on this device, bypass lobby
+        showQuiz();
       }
     });
 
+    // Auto-fill student information from registration
     const storedName = localStorage.getItem('coralverse_name');
     const storedPhone = localStorage.getItem('coralverse_phone');
     if (storedName) document.getElementById('nameInput').value = storedName;
     if (storedPhone) document.getElementById('phoneInput').value = storedPhone;
 
+    // Floating logo scroll behavior
     const logo = document.getElementById('floating-logo');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 40) logo.classList.add('scrolled');
       else logo.classList.remove('scrolled');
     });
 
-    // BUG FIX 4: Option selection and distinct color handling
+    // Passcode Unlock Logic
+    function unlockLobby() {
+      const input = document.getElementById("passcodeInput").value.trim();
+      if (input === PASSCODE_ROUND1) {
+        localStorage.setItem("coralverse_round1_unlocked", "true");
+        showQuiz();
+      } else {
+        alert("Incorrect Access Code! Please wait for the host to announce it.");
+      }
+    }
+
+    function showQuiz() {
+      document.getElementById('lobbyView').style.display = 'none';
+      document.getElementById('quizView').style.display = 'block';
+    }
+
+    // Option selection & 4 distinct colors
     function handleOptionSelect(radioInput, feedbackId, msg, color, colorClass) {
-      // 1. Show feedback text with matching color
       const box = document.getElementById(feedbackId);
       box.style.display = 'block'; 
       box.style.color = color;
       box.style.border = `1px solid ${color}`; 
       box.innerText = msg;
 
-      // 2. Remove all selected classes from option labels in this question block
       const parentGroup = radioInput.closest('.option-group');
       const allLabels = parentGroup.querySelectorAll('.option-label');
       allLabels.forEach(lbl => {
         lbl.classList.remove('opt-a-selected', 'opt-b-selected', 'opt-c-selected', 'opt-d-selected');
       });
 
-      // 3. Highlight the clicked option label with its distinct color
       radioInput.closest('.option-label').classList.add(colorClass);
     }
 
+    // Submit Logic
     function submitRound1(e) {
       e.preventDefault();
       
-      // Save completion status to lock out re-playing
       localStorage.setItem("coralverse_round1_completed", "true");
 
       const form = document.getElementById('r1Form');
@@ -308,6 +355,7 @@
     }
 
     function showDone() {
+      document.getElementById('lobbyView').style.display = 'none';
       document.getElementById('quizView').style.display = 'none';
       document.getElementById('r1DoneView').style.display = 'block';
     }
