@@ -1,277 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coralverse - Round 1</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Press+Start+2P&family=Rajdhani:wght@600;700&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coralverse - Round 1</title>
+    <style>
+        body {
+            background-color: #0b132b;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+        .container {
+            background-color: #1c2541;
+            border: 2px solid #6fffe9;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 0 20px rgba(111, 255, 233, 0.2);
+        }
 
-    body {
-      min-height: 100vh; display: flex; justify-content: center; align-items: flex-start;
-      background: radial-gradient(circle at 10% 10%, #1a0033, #001f3f, #003366, #000511);
-      background-size: 300% 300%; animation: luxuryBG 12s ease infinite;
-      color: #e0f7fa; font-family: 'Rajdhani', sans-serif; padding: 80px 20px 60px 20px;
-    }
+        h1 {
+            color: #6fffe9;
+            text-align: center;
+            margin-bottom: 10px;
+        }
 
-    @keyframes luxuryBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+        .question-card {
+            margin-bottom: 25px;
+        }
 
-    .floating-logo {
-      position: fixed; top: 20px; left: 20px; width: 65px; height: 65px;
-      border-radius: 50%; border: 2px solid #00f2fe; box-shadow: 0 0 15px #00f2fe;
-      z-index: 1000; background: #08031d; object-fit: cover; transition: left 0.5s ease;
-    }
-    .floating-logo.scrolled { left: calc(100% - 85px); }
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
 
-    .neon-card {
-      width: 100%; max-width: 720px; border-radius: 20px; padding: 5px;
-      background: linear-gradient(135deg, #00f2fe, #00ffcc, #7f00ff);
-      box-shadow: 0 0 35px rgba(0, 242, 254, 0.4);
-    }
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-    .card-inner { background: #0b0c10; border-radius: 16px; padding: 35px 25px; }
-    .form-title { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; color: #ffffff; text-align: center; text-shadow: 0 0 10px #00f2fe; }
-    .subtitle-badge { font-family: 'Press Start 2P', monospace; font-size: 0.75rem; color: #00ffcc; text-align: center; margin-bottom: 25px; display: block; }
+        .option-btn {
+            background-color: #3a506b;
+            color: #ffffff;
+            border: 1px solid #5bc0be;
+            padding: 12px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
 
-    .user-block { background: rgba(0, 242, 254, 0.1); border: 1px solid #00f2fe; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-    .user-block label { font-family: 'Orbitron', sans-serif; color: #00ffcc; font-size: 0.8rem; display: block; margin-bottom: 6px; }
-    .user-input { width: 100%; padding: 10px; border-radius: 6px; border: none; background: #e8ecef; font-weight: 700; color: #12131c; }
+        .option-btn:hover {
+            opacity: 0.9;
+        }
 
-    .question-block { background: rgba(255, 255, 255, 0.04); border-left: 4px solid #00f2fe; padding: 20px; border-radius: 8px; margin-bottom: 25px; text-align: left; }
-    .question-title { font-family: 'Orbitron', sans-serif; font-size: 1rem; color: #00f2fe; margin-bottom: 8px; display: block; }
-    .prompt-text { font-size: 1.05rem; color: #e0f7fa; margin: 6px 0; font-weight: 600; }
-    .hint-text { color: #ffd700; font-size: 0.88rem; font-style: italic; margin-bottom: 12px; display: block; }
+        /* 4 Distinct Option Selection Colors */
+        .option-btn.btn-a.selected { background-color: #ff5722 !important; color: #fff; font-weight: bold; } /* Orange */
+        .option-btn.btn-b.selected { background-color: #4caf50 !important; color: #fff; font-weight: bold; } /* Green */
+        .option-btn.btn-c.selected { background-color: #2196f3 !important; color: #fff; font-weight: bold; } /* Blue */
+        .option-btn.btn-d.selected { background-color: #9c27b0 !important; color: #fff; font-weight: bold; } /* Purple */
 
-    .option-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-    .option-label { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.05); padding: 12px 16px; border-radius: 8px; cursor: pointer; color: #c2e7ff; transition: all 0.2s ease; font-size: 1.05rem; }
-    .option-label:hover { border-color: #00f2fe; background: rgba(0, 242, 254, 0.15); }
+        .submit-btn {
+            width: 100%;
+            background-color: #6fffe9;
+            color: #0b132b;
+            border: none;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
 
-    .feedback-box { display: none; margin-top: 10px; padding: 10px; border-radius: 6px; font-weight: 700; font-family: 'Press Start 2P', monospace; font-size: 0.75rem; }
+        .submit-btn:hover {
+            background-color: #5bc0be;
+        }
 
-    .submit-btn { width: 100%; padding: 18px; border: none; border-radius: 8px; background: linear-gradient(90deg, #00f2fe, #00ffcc); color: #050214; font-family: 'Press Start 2P', monospace; font-size: 0.85rem; cursor: pointer; box-shadow: 0 0 20px rgba(0, 242, 254, 0.6); margin-top: 20px; }
-    .completion-screen { display: none; text-align: center; padding: 20px 10px; }
-    .confirm-msg { font-size: 1.2rem; color: #e0f7fa; line-height: 1.6; margin-bottom: 20px; }
-  </style>
+        .already-submitted {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .already-submitted h2 {
+            color: #ff5722;
+        }
+    </style>
 </head>
 <body>
 
-  <img src="logo.jpg" id="floating-logo" class="floating-logo" alt="Logo">
-
-  <div class="neon-card">
-    <div class="card-inner">
-
-      <div id="quizView">
-        <h1 class="form-title">CORALVERSE</h1>
-        <span class="subtitle-badge">ROUND 1 : SCREENING (10 MCQs)</span>
-
-        <form id="r1Form" onsubmit="submitRound1(event)">
-          <div class="user-block">
-            <div>
-              <label>CANDIDATE NAME *</label>
-              <input type="text" name="entry.1374676926" id="nameInput" class="user-input" required>
+<div class="container" id="main-container">
+    <h1>CORALVERSE: ROUND 1</h1>
+    
+    <form id="quiz-form" onsubmit="handleFormSubmit(event)">
+        <div class="question-card">
+            <p class="question-text"><strong>Q1.</strong> Which organelle is known as the powerhouse of the cell for generating ATP energy?</p>
+            <div class="options-grid">
+                <button type="button" class="option-btn" onclick="selectOption(this, 'A')">A) Nucleus</button>
+                <button type="button" class="option-btn" onclick="selectOption(this, 'B')">B) Mitochondrion</button>
+                <button type="button" class="option-btn" onclick="selectOption(this, 'C')">C) Ribosome</button>
+                <button type="button" class="option-btn" onclick="selectOption(this, 'D')">D) Endoplasmic Reticulum</button>
             </div>
-            <div>
-              <label>PHONE NUMBER *</label>
-              <input type="tel" name="entry.2046788960" id="phoneInput" class="user-input" pattern="[0-9]{10}" required>
-            </div>
-          </div>
+        </div>
 
-          <!-- Q1 -->
-          <div class="question-block">
-            <label class="question-title">1. 🧬 DNA DETECTIVE</label>
-            <p class="prompt-text">Sequence: ATGCCGTAACG. Which base appears most frequently?</p>
-            <span class="hint-text">💡 Hint: Count how many times A, T, G, and C appear!</span>
-            <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.1574468374" value="A" required onchange="showFB('fb1', 'GOOD EYE DETECTIVE! 🔍', '#00ffcc')"> A</label>
-              <label class="option-label"><input type="radio" name="entry.1574468374" value="T" onchange="showFB('fb1', 'RE-COUNT THOSE TS! 🧐', 'yellow')"> T</label>
-              <label class="option-label"><input type="radio" name="entry.1574468374" value="G" onchange="showFB('fb1', 'CLOSE, BUT TRY AGAIN! 🧪', '#ff4d4d')"> G</label>
-              <label class="option-label"><input type="radio" name="entry.1574468374" value="C" onchange="showFB('fb1', 'C IS BUSY, BUT NOT MOST! ❌', '#ff4d4d')"> C</label>
-            </div>
-            <div id="fb1" class="feedback-box"></div>
-          </div>
+        <button type="submit" id="submit-btn" class="submit-btn">SUBMIT ROUND 1</button>
+    </form>
+</div>
 
-          <!-- Q2 -->
-          <div class="question-block">
-            <label class="question-title">2. 💻 BIOINFORMATICIAN'S SUPERPOWER</label>
-            <p class="prompt-text">You have 1 million DNA sequences. Most useful for finding a pattern quickly?</p>
-            <span class="hint-text">💡 Hint: Reading 1 million sequences by eye would take years!</span>
-            <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.1207384083" value="Looking at them one by one 👀" required onchange="showFB('fb2', 'YOUR EYES WILL FALL OUT! 😵', '#ff4d4d')"> Looking at them one by one 👀</label>
-              <label class="option-label"><input type="radio" name="entry.1207384083" value="A computer algorithm" onchange="showFB('fb2', 'WORK SMARTER, NOT HARDER! 🚀', '#00ffcc')"> A computer algorithm</label>
-              <label class="option-label"><input type="radio" name="entry.1207384083" value="Asking your friend" onchange="showFB('fb2', 'YOUR FRIEND WOULD RUN AWAY! 😂', 'yellow')"> Asking your friend</label>
-              <label class="option-label"><input type="radio" name="entry.1207384083" value="Microscope" onchange="showFB('fb2', 'MICROSCOPES DON\'T READ DATA! 🔬', '#ff4d4d')"> Microscope</label>
-            </div>
-            <div id="fb2" class="feedback-box"></div>
-          </div>
-
-          <!-- Q3 -->
-          <div class="question-block">
-            <label class="question-title">3. 🧠 THINK FAST</label>
-            <p class="prompt-text">If DNA has sequence ATGC, what is its complementary strand?</p>
-            <span class="hint-text">💡 Hint: Base pairs rule — A pairs with T, and C pairs with G!</span>
-            <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.1328822014" value="TACG" required onchange="showFB('fb3', 'PERFECT MATCH! 🧬', '#00ffcc')"> TACG</label>
-              <label class="option-label"><input type="radio" name="entry.1328822014" value="UACG" onchange="showFB('fb3', 'U IS FOR RNA, NOT DNA! ❌', 'yellow')"> UACG</label>
-              <label class="option-label"><input type="radio" name="entry.1328822014" value="ATGC" onchange="showFB('fb3', 'THAT\'S THE SAME STRAND! 🤡', '#ff4d4d')"> ATGC</label>
-              <label class="option-label"><input type="radio" name="entry.1328822014" value="GCAT" onchange="showFB('fb3', 'FLIPPED AND WRONG! 🌀', '#ff4d4d')"> GCAT</label>
-            </div>
-            <div id="fb3" class="feedback-box"></div>
-          </div>
-
-          <!-- Q4 -->
-          <div class="question-block">
-            <label class="question-title">4. THE BIOINFORMATICS EMERGENCY</label>
-            <p class="prompt-text">Computer says: "I found 50,000 possible DNA matches." What to do first?</p>
-            <span class="hint-text">💡 Hint: Don't panic! Use search settings to narrow down the list.</span>
-            <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.1525597505" value="Panic" required onchange="showFB('fb4', 'KEEP CALM AND CODE ON! 😱', '#ff4d4d')"> Panic</label>
-              <label class="option-label"><input type="radio" name="entry.1525597505" value="Delete the computer" onchange="showFB('fb4', 'DON\'T DESTROY LAB PROPERTY! 🔨', '#ff4d4d')"> Delete the computer</label>
-              <label class="option-label"><input type="radio" name="entry.1525597505" value="Use filters/criteria to narrow the results" onchange="showFB('fb4', 'FILTER LIKE A PRO! 🎯', '#00ffcc')"> Use filters/criteria to narrow the results</label>
-              <label class="option-label"><input type="radio" name="entry.1525597505" value="NONE OF THESE ABOVE" onchange="showFB('fb4', 'THERE IS A GOOD OPTION ABOVE! 👆', 'yellow')"> NONE OF THESE ABOVE</label>
-            </div>
-            <div id="fb4" class="feedback-box"></div>
-          </div>
-
-          <!-- Q5 -->
-          <div class="question-block">
-            <label class="question-title">5. 🤖 AI VS DNA</label>
-            <p class="prompt-text">AI learns disease patterns from thousands of DNA sequences. Example of?</p>
-            <span class="hint-text">💡 Hint: Computers learning patterns from data is called...</span>
-            <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.1072218188" value="Machine learninig" required onchange="showFB('fb5', 'FUTURE SCIENTIST UNLOCKED! 🤖', '#00ffcc')"> Machine learning</label>
-              <label class="option-label"><input type="radio" name="entry.1072218188" value="Photosynthesi" onchange="showFB('fb5', 'COMPUTERS DON\'T NEED SUNLIGHT! 🌿', '#ff4d4d')"> Photosynthesis</label>
-              <label class="option-label"><input type="radio" name="entry.1072218188" value="PCR" onchange="showFB('fb5', 'PCR COPIES DNA, NOT LEARNS! 🧪', 'yellow')"> PCR</label>
-              <label class="option-label"><input type="radio" name="entry.1072218188" value="translatoin" onchange="showFB('fb5', 'THAT\'S PROTEIN SYNTHESIS! 🧬', '#ff4d4d')"> Translation</label>
-            </div>
-            <div id="fb5" class="feedback-box"></div>
-          </div>
-
-          <!-- Q6 -->
-          <div class="question-block">
-            <label class="question-title">6. 🧩 SEQUENCE PUZZLE</label>
-            <p class="prompt-text">Which sequence has the highest GC content?</p>
-            <span class="hint-text">💡 Hint: Count total 'G's and 'C's in each option!</span>
-            <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.1504480657" value="AAAAATTTTT" required onchange="showFB('fb6', 'ZERO Gs AND Cs HERE! 🌵', '#ff4d4d')"> AAAAATTTTT</label>
-              <label class="option-label"><input type="radio" name="entry.1504480657" value="ATGCATGCAT" onchange="showFB('fb6', 'GOOD, BUT CAN WE GO HIGHER? 📈', 'yellow')"> ATGCATGCAT</label>
-              <label class="option-label"><input type="radio" name="entry.1504480657" value="GGCCGGCCAA" onchange="showFB('fb6', '80% GC CONTENT! WINNER! 💥', '#00ffcc')"> GGCCGGCCAA</label>
-              <label class="option-label"><input type="radio" name="entry.1504480657" value="ATATATATAT" onchange="showFB('fb6', 'PURE AT! ZERO GC! 😴', '#ff4d4d')"> ATATATATAT</label>
-            </div>
-            <div id="fb6" class="feedback-box"></div>
-          </div>
-
-          <!-- Q7 -->
-          <div class="question-block">
-            <label class="question-title">7. 🧪 DIGITAL MUTATION</label>
-            <p class="prompt-text">Original: ATGCCA. Mutation changes 5th base C → A. New sequence?</p>
-            <span class="hint-text">💡 Hint: Count to position 5: A(1) T(2) G(3) C(4) C(5) A(6). Replace the 5th C with A!</span>
-            <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.1729491466" value="ATGCAA" required onchange="showFB('fb7', 'ACCURATE EDITING! ✂️', '#00ffcc')"> ATGCAA</label>
-              <label class="option-label"><input type="radio" name="entry.1729491466" value="ATGCCA" onchange="showFB('fb7', 'YOU FORGOT TO MUTATE IT! 😴', '#ff4d4d')"> ATGCCA</label>
-              <label class="option-label"><input type="radio" name="entry.1729491466" value="ATGACA" onchange="showFB('fb7', 'THAT\'S POSITION 4! CLOSE! 🧐', 'yellow')"> ATGACA</label>
-              <label class="option-label"><input type="radio" name="entry.1729491466" value="ATGAAA" onchange="showFB('fb7', 'TOO MANY MUTATIONS! 💥', '#ff4d4d')"> ATGAAA</label>
-            </div>
-            <div id="fb7" class="feedback-box"></div>
-          </div>
-
-          <!-- Q8 -->
-          <div class="question-block">
-            <label class="question-title">8. DNA COORDINATE PUZZLE</label>
-            <p class="prompt-text">• 1 Codon = 3 bases | • X = (5 codons) - (2 codons) = ? bases | • Y = X ✖️ 2</p>
-            <span class="hint-text">💡 Hint: 5 codons = 15 bases. 2 codons = 6 bases. X = 15 - 6 = 9!</span>
-            <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.1598627211" value="[2, 4]" required onchange="showFB('fb8', 'MATH IS A BIT OFF! 🧮', '#ff4d4d')"> [2, 4]</label>
-              <label class="option-label"><input type="radio" name="entry.1598627211" value="[4, 8]" onchange="showFB('fb8', 'CHECK CODON MULTIPLIER! 📐', 'yellow')"> [4, 8]</label>
-              <label class="option-label"><input type="radio" name="entry.1598627211" value="[3, 9]" onchange="showFB('fb8', 'ALMOST, CHECK X FORMULA! 🧐', 'yellow')"> [3, 9]</label>
-              <label class="option-label"><input type="radio" name="entry.1598627211" value="[3, 6]" onchange="showFB('fb8', 'COORDINATES LOCKED IN! 🎯', '#00ffcc')"> [3, 6]</label>
-            </div>
-            <div id="fb8" class="feedback-box"></div>
-          </div>
-
-          <!-- Q9 -->
-          <div class="question-block">
-            <label class="question-title">9. HIDDEN INFORMATION</label>
-            <p class="prompt-text">Name for single-nucleotide difference between sequences?</p>
-            <span class="hint-text">💡 Hint: Stands for Single Nucleotide Polymorphism!</span>
-            <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.215985189" value="SNP" required onchange="showFB('fb9', 'GENOMIC MASTER! 🧬', '#00ffcc')"> SNP</label>
-              <label class="option-label"><input type="radio" name="entry.215985189" value="ATP" onchange="showFB('fb9', 'ATP IS CELLULAR ENERGY! ⚡', '#ff4d4d')"> ATP</label>
-              <label class="option-label"><input type="radio" name="entry.215985189" value="RNA" onchange="showFB('fb9', 'RNA IS A MOLECULE, NOT A VARIATION! 🧬', 'yellow')"> RNA</label>
-              <label class="option-label"><input type="radio" name="entry.215985189" value="Ribosome" onchange="showFB('fb9', 'RIBOSOME BUILDS PROTEINS! 🏭', '#ff4d4d')"> Ribosome</label>
-            </div>
-            <div id="fb9" class="feedback-box"></div>
-          </div>
-
-          <!-- Q10 -->
-          <div class="question-block">
-            <label class="question-title">10. FINAL BRAIN TRAP</label>
-            <p class="prompt-text">Two sequences share 99% similarity. What to conclude?</p>
-            <span class="hint-text">💡 Hint: Humans and chimpanzees share 98%+ DNA similarity, but we are different species!</span>
-            <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.1205896592" value="They are completely identica" required onchange="showFB('fb10', '1% CAN MAKE A HUGE DIFFERENCE! 🐒', '#ff4d4d')"> They are completely identical</label>
-              <label class="option-label"><input type="radio" name="entry.1205896592" value="They must come from the same person" onchange="showFB('fb10', 'NOT ALWAYS TRUE IN GENETICS! 🛑', 'yellow')"> They must come from the same person</label>
-              <label class="option-label"><input type="radio" name="entry.1205896592" value="They have very similar sequences, but more analysis is needed to understand their biological relationship" onchange="showFB('fb10', 'TRUE SCIENTIFIC THINKING! 🧠🏆', '#00ffcc')"> They have very similar sequences, but more analysis is needed</label>
-              <label class="option-label"><input type="radio" name="entry.1205896592" value="One sequence is fake" onchange="showFB('fb10', 'DON\'T BLAME THE DATA! 😂', '#ff4d4d')"> One sequence is fake</label>
-            </div>
-            <div id="fb10" class="feedback-box"></div>
-          </div>
-
-          <button type="submit" class="submit-btn">SUBMIT ROUND 1</button>
-        </form>
-      </div>
-
-      <div id="r1DoneView" class="completion-screen">
-        <h1 class="form-title" style="color: #00ffcc; margin-bottom: 10px;">ROUND 1 COMPLETED! 🚀</h1>
-        <span class="subtitle-badge">ANSWERS SUBMITTED SUCCESSFULLY</span>
-        <p class="confirm-msg">
-          Your Round 1 responses have been recorded.<br><br>
-          Please look at the <strong>host projector screen</strong>. The top qualifiers will be announced shortly for <strong>ROUND 2</strong>!
-        </p>
-      </div>
-
-    </div>
-  </div>
-
-  <script>
-    const storedName = localStorage.getItem('coralverse_name');
-    const storedPhone = localStorage.getItem('coralverse_phone');
-    if (storedName) document.getElementById('nameInput').value = storedName;
-    if (storedPhone) document.getElementById('phoneInput').value = storedPhone;
-
-    const logo = document.getElementById('floating-logo');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 40) logo.classList.add('scrolled');
-      else logo.classList.remove('scrolled');
+<script>
+    // 1. Prevent Re-submission or Re-playing on Refresh
+    document.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem("coralverse_round1_completed") === "true") {
+            showCompletedState();
+        }
     });
 
-    function showFB(id, msg, color) {
-      const box = document.getElementById(id);
-      box.style.display = 'block'; box.style.color = color;
-      box.style.border = `1px solid ${color}`; box.innerText = msg;
+    // 2. Dynamic 4-Color Selection Logic
+    function selectOption(btn, optionLetter) {
+        const siblings = btn.parentElement.querySelectorAll('.option-btn');
+        siblings.forEach(b => b.classList.remove('selected', 'btn-a', 'btn-b', 'btn-c', 'btn-d'));
+
+        btn.classList.add('selected', `btn-${optionLetter.toLowerCase()}`);
     }
 
-    function submitRound1(e) {
-      e.preventDefault();
-      const form = document.getElementById('r1Form');
-      const formData = new URLSearchParams(new FormData(form));
+    // 3. Handle Form Submission
+    function handleFormSubmit(e) {
+        e.preventDefault();
 
-      fetch("https://docs.google.com/forms/d/e/1FAIpQLSfb-2fXPeJ2YXYiO-FtVnw0VsUBcTtflIkc8M3Gq7yKmAeQ_Q/formResponse", {
-        method: "POST", mode: "no-cors",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formData.toString()
-      }).then(() => showDone()).catch(() => showDone());
+        // Check if an option was selected
+        const selected = document.querySelector('.option-btn.selected');
+        if (!selected) {
+            alert("Please select an answer before submitting!");
+            return;
+        }
+
+        // Save completion flag locally
+        localStorage.setItem("coralverse_round1_completed", "true");
+
+        // Display completion view
+        showCompletedState();
     }
 
-    function showDone() {
-      document.getElementById('quizView').style.display = 'none';
-      document.getElementById('r1DoneView').style.display = 'block';
+    function showCompletedState() {
+        document.getElementById("main-container").innerHTML = `
+            <div class="already-submitted">
+                <h2>ROUND 1 COMPLETED!</h2>
+                <p>Your responses for Round 1 have been recorded.</p>
+                <p>Please wait for the host to present the Round 2 QR Code on screen.</p>
+            </div>
+        `;
     }
-  </script>
+</script>
+
 </body>
 </html>
