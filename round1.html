@@ -1,168 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coralverse - Round 1</title>
-    <style>
-        body {
-            background-color: #0b132b;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coralverse - Round 1</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Press+Start+2P&family=Rajdhani:wght@600;700&display=swap');
 
-        .container {
-            background-color: #1c2541;
-            border: 2px solid #6fffe9;
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 600px;
-            width: 100%;
-            box-shadow: 0 0 20px rgba(111, 255, 233, 0.2);
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        h1 {
-            color: #6fffe9;
-            text-align: center;
-            margin-bottom: 10px;
-        }
+    body {
+      min-height: 100vh; display: flex; justify-content: center; align-items: flex-start;
+      background: radial-gradient(circle at 10% 10%, #1a0033, #001f3f, #003366, #000511);
+      background-size: 300% 300%; animation: luxuryBG 12s ease infinite;
+      color: #e0f7fa; font-family: 'Rajdhani', sans-serif; padding: 80px 20px 60px 20px;
+    }
 
-        .question-card {
-            margin-bottom: 25px;
-        }
+    @keyframes luxuryBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-        .question-text {
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-        }
+    .floating-logo {
+      position: fixed; top: 20px; left: 20px; width: 65px; height: 65px;
+      border-radius: 50%; border: 2px solid #00f2fe; box-shadow: 0 0 15px #00f2fe;
+      z-index: 1000; background: #08031d; object-fit: cover; transition: left 0.5s ease;
+    }
+    .floating-logo.scrolled { left: calc(100% - 85px); }
 
-        .options-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+    .neon-card {
+      width: 100%; max-width: 720px; border-radius: 20px; padding: 5px;
+      background: linear-gradient(135deg, #00f2fe, #00ffcc, #7f00ff);
+      box-shadow: 0 0 35px rgba(0, 242, 254, 0.4);
+    }
 
-        .option-btn {
-            background-color: #3a506b;
-            color: #ffffff;
-            border: 1px solid #5bc0be;
-            padding: 12px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            text-align: left;
-            font-size: 1rem;
-            transition: all 0.2s ease;
-        }
+    .card-inner { background: #0b0c10; border-radius: 16px; padding: 35px 25px; }
+    .form-title { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; color: #ffffff; text-align: center; text-shadow: 0 0 10px #00f2fe; }
+    .subtitle-badge { font-family: 'Press Start 2P', monospace; font-size: 0.75rem; color: #00ffcc; text-align: center; margin-bottom: 25px; display: block; }
 
-        .option-btn:hover {
-            opacity: 0.9;
-        }
+    .user-block { background: rgba(0, 242, 254, 0.1); border: 1px solid #00f2fe; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .user-block label { font-family: 'Orbitron', sans-serif; color: #00ffcc; font-size: 0.8rem; display: block; margin-bottom: 6px; }
+    .user-input { width: 100%; padding: 10px; border-radius: 6px; border: none; background: #e8ecef; font-weight: 700; color: #12131c; }
 
-        /* 4 Distinct Option Selection Colors */
-        .option-btn.btn-a.selected { background-color: #ff5722 !important; color: #fff; font-weight: bold; } /* Orange */
-        .option-btn.btn-b.selected { background-color: #4caf50 !important; color: #fff; font-weight: bold; } /* Green */
-        .option-btn.btn-c.selected { background-color: #2196f3 !important; color: #fff; font-weight: bold; } /* Blue */
-        .option-btn.btn-d.selected { background-color: #9c27b0 !important; color: #fff; font-weight: bold; } /* Purple */
+    .question-block { background: rgba(255, 255, 255, 0.04); border-left: 4px solid #00f2fe; padding: 20px; border-radius: 8px; margin-bottom: 25px; text-align: left; }
+    .question-title { font-family: 'Orbitron', sans-serif; font-size: 1rem; color: #00f2fe; margin-bottom: 8px; display: block; }
+    .prompt-text { font-size: 1.05rem; color: #e0f7fa; margin: 6px 0; font-weight: 600; }
+    .hint-text { color: #ffd700; font-size: 0.88rem; font-style: italic; margin-bottom: 12px; display: block; }
 
-        .submit-btn {
-            width: 100%;
-            background-color: #6fffe9;
-            color: #0b132b;
-            border: none;
-            padding: 14px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: background 0.3s ease;
-        }
+    .option-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    
+    /* Option Label Base Style */
+    .option-label { 
+      display: flex; align-items: center; gap: 10px; 
+      background: rgba(255, 255, 255, 0.05); padding: 12px 16px; 
+      border-radius: 8px; cursor: pointer; color: #c2e7ff; 
+      transition: all 0.2s ease; font-size: 1.05rem; 
+      border: 1px solid transparent;
+    }
+    .option-label:hover { border-color: #00f2fe; background: rgba(0, 242, 254, 0.15); }
 
-        .submit-btn:hover {
-            background-color: #5bc0be;
-        }
+    /* BUG FIX 4: 4 Distinct Selection Colors for clicked options */
+    .option-label.opt-a-selected { background: rgba(255, 87, 34, 0.3) !important; border-color: #FF5722 !important; color: #ffffff !important; font-weight: bold; }
+    .option-label.opt-b-selected { background: rgba(76, 175, 80, 0.3) !important; border-color: #4CAF50 !important; color: #ffffff !important; font-weight: bold; }
+    .option-label.opt-c-selected { background: rgba(33, 150, 243, 0.3) !important; border-color: #2196F3 !important; color: #ffffff !important; font-weight: bold; }
+    .option-label.opt-d-selected { background: rgba(156, 39, 176, 0.3) !important; border-color: #9C27B0 !important; color: #ffffff !important; font-weight: bold; }
 
-        .already-submitted {
-            text-align: center;
-            padding: 40px 20px;
-        }
+    .feedback-box { display: none; margin-top: 10px; padding: 10px; border-radius: 6px; font-weight: 700; font-family: 'Press Start 2P', monospace; font-size: 0.75rem; }
 
-        .already-submitted h2 {
-            color: #ff5722;
-        }
-    </style>
+    .submit-btn { width: 100%; padding: 18px; border: none; border-radius: 8px; background: linear-gradient(90deg, #00f2fe, #00ffcc); color: #050214; font-family: 'Press Start 2P', monospace; font-size: 0.85rem; cursor: pointer; box-shadow: 0 0 20px rgba(0, 242, 254, 0.6); margin-top: 20px; }
+    .completion-screen { display: none; text-align: center; padding: 20px 10px; }
+    .confirm-msg { font-size: 1.2rem; color: #e0f7fa; line-height: 1.6; margin-bottom: 20px; }
+  </style>
 </head>
 <body>
 
-<div class="container" id="main-container">
-    <h1>CORALVERSE: ROUND 1</h1>
-    
-    <form id="quiz-form" onsubmit="handleFormSubmit(event)">
-        <div class="question-card">
-            <p class="question-text"><strong>Q1.</strong> Which organelle is known as the powerhouse of the cell for generating ATP energy?</p>
-            <div class="options-grid">
-                <button type="button" class="option-btn" onclick="selectOption(this, 'A')">A) Nucleus</button>
-                <button type="button" class="option-btn" onclick="selectOption(this, 'B')">B) Mitochondrion</button>
-                <button type="button" class="option-btn" onclick="selectOption(this, 'C')">C) Ribosome</button>
-                <button type="button" class="option-btn" onclick="selectOption(this, 'D')">D) Endoplasmic Reticulum</button>
+  <img src="logo.jpg" id="floating-logo" class="floating-logo" alt="Logo">
+
+  <div class="neon-card">
+    <div class="card-inner">
+
+      <div id="quizView">
+        <h1 class="form-title">CORALVERSE</h1>
+        <span class="subtitle-badge">ROUND 1 : SCREENING (10 MCQs)</span>
+
+        <form id="r1Form" onsubmit="submitRound1(event)">
+          <div class="user-block">
+            <div>
+              <label>CANDIDATE NAME *</label>
+              <input type="text" name="entry.1374676926" id="nameInput" class="user-input" required>
             </div>
-        </div>
+            <div>
+              <label>PHONE NUMBER *</label>
+              <input type="tel" name="entry.2046788960" id="phoneInput" class="user-input" pattern="[0-9]{10}" required>
+            </div>
+          </div>
 
-        <button type="submit" id="submit-btn" class="submit-btn">SUBMIT ROUND 1</button>
-    </form>
-</div>
+          <!-- Q1: UPDATED CELLULAR POWERHOUSE QUESTION -->
+          <div class="question-block">
+            <label class="question-title">1. 🧬 CELLULAR POWERHOUSE</label>
+            <p class="prompt-text">Which organelle is responsible for producing ATP energy in the cell?</p>
+            <span class="hint-text">💡 Hint: Known as the powerhouse of the cell!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.1574468374" value="Nucleus" required onchange="handleOptionSelect(this, 'fb1', 'NUCLEUS STORES DNA! 🧠', '#FF5722', 'opt-a-selected')"> Nucleus</label>
+              <label class="option-label"><input type="radio" name="entry.1574468374" value="Mitochondria" onchange="handleOptionSelect(this, 'fb1', 'POWERHOUSE UNLOCKED! ⚡', '#4CAF50', 'opt-b-selected')"> Mitochondria</label>
+              <label class="option-label"><input type="radio" name="entry.1574468374" value="Ribosome" onchange="handleOptionSelect(this, 'fb1', 'RIBOSOMES MAKE PROTEIN! 🏭', '#2196F3', 'opt-c-selected')"> Ribosome</label>
+              <label class="option-label"><input type="radio" name="entry.1574468374" value="Golgi Apparatus" onchange="handleOptionSelect(this, 'fb1', 'GOLGI PACKAGES PROTEINS! 📦', '#9C27B0', 'opt-d-selected')"> Golgi Apparatus</label>
+            </div>
+            <div id="fb1" class="feedback-box"></div>
+          </div>
 
-<script>
-    // 1. Prevent Re-submission or Re-playing on Refresh
+          <!-- Q2 -->
+          <div class="question-block">
+            <label class="question-title">2. 💻 BIOINFORMATICIAN'S SUPERPOWER</label>
+            <p class="prompt-text">You have 1 million DNA sequences. Most useful for finding a pattern quickly?</p>
+            <span class="hint-text">💡 Hint: Reading 1 million sequences by eye would take years!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.1207384083" value="Looking at them one by one 👀" required onchange="handleOptionSelect(this, 'fb2', 'YOUR EYES WILL FALL OUT! 😵', '#FF5722', 'opt-a-selected')"> Looking at them one by one 👀</label>
+              <label class="option-label"><input type="radio" name="entry.1207384083" value="A computer algorithm" onchange="handleOptionSelect(this, 'fb2', 'WORK SMARTER, NOT HARDER! 🚀', '#4CAF50', 'opt-b-selected')"> A computer algorithm</label>
+              <label class="option-label"><input type="radio" name="entry.1207384083" value="Asking your friend" onchange="handleOptionSelect(this, 'fb2', 'YOUR FRIEND WOULD RUN AWAY! 😂', '#2196F3', 'opt-c-selected')"> Asking your friend</label>
+              <label class="option-label"><input type="radio" name="entry.1207384083" value="Microscope" onchange="handleOptionSelect(this, 'fb2', 'MICROSCOPES DON\'T READ DATA! 🔬', '#9C27B0', 'opt-d-selected')"> Microscope</label>
+            </div>
+            <div id="fb2" class="feedback-box"></div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="question-block">
+            <label class="question-title">3. 🧠 THINK FAST</label>
+            <p class="prompt-text">If DNA has sequence ATGC, what is its complementary strand?</p>
+            <span class="hint-text">💡 Hint: Base pairs rule — A pairs with T, and C pairs with G!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.1328822014" value="TACG" required onchange="handleOptionSelect(this, 'fb3', 'PERFECT MATCH! 🧬', '#FF5722', 'opt-a-selected')"> TACG</label>
+              <label class="option-label"><input type="radio" name="entry.1328822014" value="UACG" onchange="handleOptionSelect(this, 'fb3', 'U IS FOR RNA, NOT DNA! ❌', '#4CAF50', 'opt-b-selected')"> UACG</label>
+              <label class="option-label"><input type="radio" name="entry.1328822014" value="ATGC" onchange="handleOptionSelect(this, 'fb3', 'THAT\'S THE SAME STRAND! 🤡', '#2196F3', 'opt-c-selected')"> ATGC</label>
+              <label class="option-label"><input type="radio" name="entry.1328822014" value="GCAT" onchange="handleOptionSelect(this, 'fb3', 'FLIPPED AND WRONG! 🌀', '#9C27B0', 'opt-d-selected')"> GCAT</label>
+            </div>
+            <div id="fb3" class="feedback-box"></div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="question-block">
+            <label class="question-title">4. THE BIOINFORMATICS EMERGENCY</label>
+            <p class="prompt-text">Computer says: "I found 50,000 possible DNA matches." What to do first?</p>
+            <span class="hint-text">💡 Hint: Don't panic! Use search settings to narrow down the list.</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.1525597505" value="Panic" required onchange="handleOptionSelect(this, 'fb4', 'KEEP CALM AND CODE ON! 😱', '#FF5722', 'opt-a-selected')"> Panic</label>
+              <label class="option-label"><input type="radio" name="entry.1525597505" value="Delete the computer" onchange="handleOptionSelect(this, 'fb4', 'DON\'T DESTROY LAB PROPERTY! 🔨', '#4CAF50', 'opt-b-selected')"> Delete the computer</label>
+              <label class="option-label"><input type="radio" name="entry.1525597505" value="Use filters/criteria to narrow the results" onchange="handleOptionSelect(this, 'fb4', 'FILTER LIKE A PRO! 🎯', '#2196F3', 'opt-c-selected')"> Use filters/criteria to narrow the results</label>
+              <label class="option-label"><input type="radio" name="entry.1525597505" value="NONE OF THESE ABOVE" onchange="handleOptionSelect(this, 'fb4', 'THERE IS A GOOD OPTION ABOVE! 👆', '#9C27B0', 'opt-d-selected')"> NONE OF THESE ABOVE</label>
+            </div>
+            <div id="fb4" class="feedback-box"></div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="question-block">
+            <label class="question-title">5. 🤖 AI VS DNA</label>
+            <p class="prompt-text">AI learns disease patterns from thousands of DNA sequences. Example of?</p>
+            <span class="hint-text">💡 Hint: Computers learning patterns from data is called...</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.1072218188" value="Machine learninig" required onchange="handleOptionSelect(this, 'fb5', 'FUTURE SCIENTIST UNLOCKED! 🤖', '#FF5722', 'opt-a-selected')"> Machine learning</label>
+              <label class="option-label"><input type="radio" name="entry.1072218188" value="Photosynthesi" onchange="handleOptionSelect(this, 'fb5', 'COMPUTERS DON\'T NEED SUNLIGHT! 🌿', '#4CAF50', 'opt-b-selected')"> Photosynthesis</label>
+              <label class="option-label"><input type="radio" name="entry.1072218188" value="PCR" onchange="handleOptionSelect(this, 'fb5', 'PCR COPIES DNA, NOT LEARNS! 🧪', '#2196F3', 'opt-c-selected')"> PCR</label>
+              <label class="option-label"><input type="radio" name="entry.1072218188" value="translatoin" onchange="handleOptionSelect(this, 'fb5', 'THAT\'S PROTEIN SYNTHESIS! 🧬', '#9C27B0', 'opt-d-selected')"> Translation</label>
+            </div>
+            <div id="fb5" class="feedback-box"></div>
+          </div>
+
+          <!-- Q6 -->
+          <div class="question-block">
+            <label class="question-title">6. 🧩 SEQUENCE PUZZLE</label>
+            <p class="prompt-text">Which sequence has the highest GC content?</p>
+            <span class="hint-text">💡 Hint: Count total 'G's and 'C's in each option!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.1504480657" value="AAAAATTTTT" required onchange="handleOptionSelect(this, 'fb6', 'ZERO Gs AND Cs HERE! 🌵', '#FF5722', 'opt-a-selected')"> AAAAATTTTT</label>
+              <label class="option-label"><input type="radio" name="entry.1504480657" value="ATGCATGCAT" onchange="handleOptionSelect(this, 'fb6', 'GOOD, BUT CAN WE GO HIGHER? 📈', '#4CAF50', 'opt-b-selected')"> ATGCATGCAT</label>
+              <label class="option-label"><input type="radio" name="entry.1504480657" value="GGCCGGCCAA" onchange="handleOptionSelect(this, 'fb6', '80% GC CONTENT! WINNER! 💥', '#2196F3', 'opt-c-selected')"> GGCCGGCCAA</label>
+              <label class="option-label"><input type="radio" name="entry.1504480657" value="ATATATATAT" onchange="handleOptionSelect(this, 'fb6', 'PURE AT! ZERO GC! 😴', '#9C27B0', 'opt-d-selected')"> ATATATATAT</label>
+            </div>
+            <div id="fb6" class="feedback-box"></div>
+          </div>
+
+          <!-- Q7 -->
+          <div class="question-block">
+            <label class="question-title">7. 🧪 DIGITAL MUTATION</label>
+            <p class="prompt-text">Original: ATGCCA. Mutation changes 5th base C → A. New sequence?</p>
+            <span class="hint-text">💡 Hint: Count to position 5: A(1) T(2) G(3) C(4) C(5) A(6). Replace the 5th C with A!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.1729491466" value="ATGCAA" required onchange="handleOptionSelect(this, 'fb7', 'ACCURATE EDITING! ✂️', '#FF5722', 'opt-a-selected')"> ATGCAA</label>
+              <label class="option-label"><input type="radio" name="entry.1729491466" value="ATGCCA" onchange="handleOptionSelect(this, 'fb7', 'YOU FORGOT TO MUTATE IT! 😴', '#4CAF50', 'opt-b-selected')"> ATGCCA</label>
+              <label class="option-label"><input type="radio" name="entry.1729491466" value="ATGACA" onchange="handleOptionSelect(this, 'fb7', 'THAT\'S POSITION 4! CLOSE! 🧐', '#2196F3', 'opt-c-selected')"> ATGACA</label>
+              <label class="option-label"><input type="radio" name="entry.1729491466" value="ATGAAA" onchange="handleOptionSelect(this, 'fb7', 'TOO MANY MUTATIONS! 💥', '#9C27B0', 'opt-d-selected')"> ATGAAA</label>
+            </div>
+            <div id="fb7" class="feedback-box"></div>
+          </div>
+
+          <!-- Q8 -->
+          <div class="question-block">
+            <label class="question-title">8. DNA COORDINATE PUZZLE</label>
+            <p class="prompt-text">• 1 Codon = 3 bases | • X = (5 codons) - (2 codons) = ? bases | • Y = X ✖️ 2</p>
+            <span class="hint-text">💡 Hint: 5 codons = 15 bases. 2 codons = 6 bases. X = 15 - 6 = 9!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.1598627211" value="[2, 4]" required onchange="handleOptionSelect(this, 'fb8', 'MATH IS A BIT OFF! 🧮', '#FF5722', 'opt-a-selected')"> [2, 4]</label>
+              <label class="option-label"><input type="radio" name="entry.1598627211" value="[4, 8]" onchange="handleOptionSelect(this, 'fb8', 'CHECK CODON MULTIPLIER! 📐', '#4CAF50', 'opt-b-selected')"> [4, 8]</label>
+              <label class="option-label"><input type="radio" name="entry.1598627211" value="[3, 9]" onchange="handleOptionSelect(this, 'fb8', 'ALMOST, CHECK X FORMULA! 🧐', '#2196F3', 'opt-c-selected')"> [3, 9]</label>
+              <label class="option-label"><input type="radio" name="entry.1598627211" value="[3, 6]" onchange="handleOptionSelect(this, 'fb8', 'COORDINATES LOCKED IN! 🎯', '#9C27B0', 'opt-d-selected')"> [3, 6]</label>
+            </div>
+            <div id="fb8" class="feedback-box"></div>
+          </div>
+
+          <!-- Q9 -->
+          <div class="question-block">
+            <label class="question-title">9. HIDDEN INFORMATION</label>
+            <p class="prompt-text">Name for single-nucleotide difference between sequences?</p>
+            <span class="hint-text">💡 Hint: Stands for Single Nucleotide Polymorphism!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.215985189" value="SNP" required onchange="handleOptionSelect(this, 'fb9', 'GENOMIC MASTER! 🧬', '#FF5722', 'opt-a-selected')"> SNP</label>
+              <label class="option-label"><input type="radio" name="entry.215985189" value="ATP" onchange="handleOptionSelect(this, 'fb9', 'ATP IS CELLULAR ENERGY! ⚡', '#4CAF50', 'opt-b-selected')"> ATP</label>
+              <label class="option-label"><input type="radio" name="entry.215985189" value="RNA" onchange="handleOptionSelect(this, 'fb9', 'RNA IS A MOLECULE, NOT A VARIATION! 🧬', '#2196F3', 'opt-c-selected')"> RNA</label>
+              <label class="option-label"><input type="radio" name="entry.215985189" value="Ribosome" onchange="handleOptionSelect(this, 'fb9', 'RIBOSOME BUILDS PROTEINS! 🏭', '#9C27B0', 'opt-d-selected')"> Ribosome</label>
+            </div>
+            <div id="fb9" class="feedback-box"></div>
+          </div>
+
+          <!-- Q10 -->
+          <div class="question-block">
+            <label class="question-title">10. FINAL BRAIN TRAP</label>
+            <p class="prompt-text">Two sequences share 99% similarity. What to conclude?</p>
+            <span class="hint-text">💡 Hint: Humans and chimpanzees share 98%+ DNA similarity, but we are different species!</span>
+            <div class="option-group">
+              <label class="option-label"><input type="radio" name="entry.1205896592" value="They are completely identica" required onchange="handleOptionSelect(this, 'fb10', '1% CAN MAKE A HUGE DIFFERENCE! 🐒', '#FF5722', 'opt-a-selected')"> They are completely identical</label>
+              <label class="option-label"><input type="radio" name="entry.1205896592" value="They must come from the same person" onchange="handleOptionSelect(this, 'fb10', 'NOT ALWAYS TRUE IN GENETICS! 🛑', '#4CAF50', 'opt-b-selected')"> They must come from the same person</label>
+              <label class="option-label"><input type="radio" name="entry.1205896592" value="They have very similar sequences, but more analysis is needed to understand their biological relationship" onchange="handleOptionSelect(this, 'fb10', 'TRUE SCIENTIFIC THINKING! 🧠🏆', '#2196F3', 'opt-c-selected')"> They have very similar sequences, but more analysis is needed</label>
+              <label class="option-label"><input type="radio" name="entry.1205896592" value="One sequence is fake" onchange="handleOptionSelect(this, 'fb10', 'DON\'T BLAME THE DATA! 😂', '#9C27B0', 'opt-d-selected')"> One sequence is fake</label>
+            </div>
+            <div id="fb10" class="feedback-box"></div>
+          </div>
+
+          <button type="submit" id="submit-btn" class="submit-btn">SUBMIT ROUND 1</button>
+        </form>
+      </div>
+
+      <div id="r1DoneView" class="completion-screen">
+        <h1 class="form-title" style="color: #00ffcc; margin-bottom: 10px;">ROUND 1 COMPLETED! 🚀</h1>
+        <span class="subtitle-badge">ANSWERS SUBMITTED SUCCESSFULLY</span>
+        <p class="confirm-msg">
+          Your Round 1 responses have been recorded.<br><br>
+          Please look at the <strong>host projector screen</strong>. The top qualifiers will be announced shortly for <strong>ROUND 2</strong>!
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // BUG FIX 1: Check if already completed on page load/refresh
     document.addEventListener("DOMContentLoaded", () => {
-        if (localStorage.getItem("coralverse_round1_completed") === "true") {
-            showCompletedState();
-        }
+      if (localStorage.getItem("coralverse_round1_completed") === "true") {
+        showDone();
+      }
     });
 
-    // 2. Dynamic 4-Color Selection Logic
-    function selectOption(btn, optionLetter) {
-        const siblings = btn.parentElement.querySelectorAll('.option-btn');
-        siblings.forEach(b => b.classList.remove('selected', 'btn-a', 'btn-b', 'btn-c', 'btn-d'));
+    const storedName = localStorage.getItem('coralverse_name');
+    const storedPhone = localStorage.getItem('coralverse_phone');
+    if (storedName) document.getElementById('nameInput').value = storedName;
+    if (storedPhone) document.getElementById('phoneInput').value = storedPhone;
 
-        btn.classList.add('selected', `btn-${optionLetter.toLowerCase()}`);
+    const logo = document.getElementById('floating-logo');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) logo.classList.add('scrolled');
+      else logo.classList.remove('scrolled');
+    });
+
+    // BUG FIX 4: Option selection and distinct color handling
+    function handleOptionSelect(radioInput, feedbackId, msg, color, colorClass) {
+      // 1. Show feedback text with matching color
+      const box = document.getElementById(feedbackId);
+      box.style.display = 'block'; 
+      box.style.color = color;
+      box.style.border = `1px solid ${color}`; 
+      box.innerText = msg;
+
+      // 2. Remove all selected classes from option labels in this question block
+      const parentGroup = radioInput.closest('.option-group');
+      const allLabels = parentGroup.querySelectorAll('.option-label');
+      allLabels.forEach(lbl => {
+        lbl.classList.remove('opt-a-selected', 'opt-b-selected', 'opt-c-selected', 'opt-d-selected');
+      });
+
+      // 3. Highlight the clicked option label with its distinct color
+      radioInput.closest('.option-label').classList.add(colorClass);
     }
 
-    // 3. Handle Form Submission
-    function handleFormSubmit(e) {
-        e.preventDefault();
+    function submitRound1(e) {
+      e.preventDefault();
+      
+      // Save completion status to lock out re-playing
+      localStorage.setItem("coralverse_round1_completed", "true");
 
-        // Check if an option was selected
-        const selected = document.querySelector('.option-btn.selected');
-        if (!selected) {
-            alert("Please select an answer before submitting!");
-            return;
-        }
+      const form = document.getElementById('r1Form');
+      const formData = new URLSearchParams(new FormData(form));
 
-        // Save completion flag locally
-        localStorage.setItem("coralverse_round1_completed", "true");
-
-        // Display completion view
-        showCompletedState();
+      fetch("https://docs.google.com/forms/d/e/1FAIpQLSfb-2fXPeJ2YXYiO-FtVnw0VsUBcTtflIkc8M3Gq7yKmAeQ_Q/formResponse", {
+        method: "POST", mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData.toString()
+      }).then(() => showDone()).catch(() => showDone());
     }
 
-    function showCompletedState() {
-        document.getElementById("main-container").innerHTML = `
-            <div class="already-submitted">
-                <h2>ROUND 1 COMPLETED!</h2>
-                <p>Your responses for Round 1 have been recorded.</p>
-                <p>Please wait for the host to present the Round 2 QR Code on screen.</p>
-            </div>
-        `;
+    function showDone() {
+      document.getElementById('quizView').style.display = 'none';
+      document.getElementById('r1DoneView').style.display = 'block';
     }
-</script>
-
+  </script>
 </body>
 </html>
