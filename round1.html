@@ -39,7 +39,6 @@
     .form-title { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; color: #ffffff; text-align: center; text-shadow: 0 0 10px #00f2fe; }
     .subtitle-badge { font-family: 'Press Start 2P', monospace; font-size: 0.75rem; color: #00ffcc; text-align: center; margin-bottom: 25px; display: block; }
 
-    /* Lobby View Styling */
     .lobby-box { text-align: center; padding: 20px 10px; }
     .lobby-msg { font-size: 1.1rem; color: #e0f7fa; line-height: 1.6; margin: 20px 0; }
     .passcode-input {
@@ -48,7 +47,6 @@
       outline: none; margin-bottom: 15px; font-family: 'Orbitron', sans-serif; letter-spacing: 2px;
     }
 
-    /* Quiz Form Styling */
     #quizView { display: none; }
     .user-block { background: rgba(0, 242, 254, 0.1); border: 1px solid #00f2fe; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
     .user-block label { font-family: 'Orbitron', sans-serif; color: #00ffcc; font-size: 0.8rem; display: block; margin-bottom: 6px; }
@@ -60,24 +58,20 @@
     .hint-text { color: #ffd700; font-size: 0.88rem; font-style: italic; margin-bottom: 12px; display: block; }
 
     .option-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-    
     .option-label { 
       display: flex; align-items: center; gap: 10px; 
       background: rgba(255, 255, 255, 0.05); padding: 12px 16px; 
       border-radius: 8px; cursor: pointer; color: #c2e7ff; 
-      transition: all 0.2s ease; font-size: 1.05rem; 
-      border: 1px solid transparent;
+      transition: all 0.2s ease; font-size: 1.05rem; border: 1px solid transparent;
     }
     .option-label:hover { border-color: #00f2fe; background: rgba(0, 242, 254, 0.15); }
 
-    /* 4 Distinct Selection Colors */
     .option-label.opt-a-selected { background: rgba(255, 87, 34, 0.3) !important; border-color: #FF5722 !important; color: #ffffff !important; font-weight: bold; }
     .option-label.opt-b-selected { background: rgba(76, 175, 80, 0.3) !important; border-color: #4CAF50 !important; color: #ffffff !important; font-weight: bold; }
     .option-label.opt-c-selected { background: rgba(33, 150, 243, 0.3) !important; border-color: #2196F3 !important; color: #ffffff !important; font-weight: bold; }
     .option-label.opt-d-selected { background: rgba(156, 39, 176, 0.3) !important; border-color: #9C27B0 !important; color: #ffffff !important; font-weight: bold; }
 
     .feedback-box { display: none; margin-top: 10px; padding: 10px; border-radius: 6px; font-weight: 700; font-family: 'Press Start 2P', monospace; font-size: 0.75rem; }
-
     .submit-btn { width: 100%; padding: 18px; border: none; border-radius: 8px; background: linear-gradient(90deg, #00f2fe, #00ffcc); color: #050214; font-family: 'Press Start 2P', monospace; font-size: 0.85rem; cursor: pointer; box-shadow: 0 0 20px rgba(0, 242, 254, 0.6); margin-top: 20px; }
     .completion-screen { display: none; text-align: center; padding: 20px 10px; }
     .confirm-msg { font-size: 1.2rem; color: #e0f7fa; line-height: 1.6; margin-bottom: 20px; }
@@ -90,7 +84,6 @@
   <div class="neon-card">
     <div class="card-inner">
 
-      <!-- 1. LOBBY WAITING SCREEN -->
       <div id="lobbyView" class="lobby-box">
         <h1 class="form-title">CORALVERSE</h1>
         <span class="subtitle-badge">ROUND 1 : LOBBY LOCKED ⏳</span>
@@ -104,7 +97,6 @@
         </div>
       </div>
 
-      <!-- 2. LIVE QUIZ VIEW -->
       <div id="quizView">
         <h1 class="form-title">CORALVERSE</h1>
         <span class="subtitle-badge">ROUND 1 : SCREENING (10 MCQs)</span>
@@ -123,14 +115,14 @@
 
           <!-- Q1 -->
           <div class="question-block">
-            <label class="question-title">1. 🧬 CELLULAR POWERHOUSE</label>
-            <p class="prompt-text">Which organelle is responsible for producing ATP energy in the cell?</p>
-            <span class="hint-text">💡 Hint: Known as the powerhouse of the cell!</span>
+            <label class="question-title">1. 🧬 DNA DETECTIVE</label>
+            <p class="prompt-text">Sequence: ATGCCGTAACG. Which base appears most frequently?</p>
+            <span class="hint-text">💡 Hint: Count how many times A, T, G, and C appear!</span>
             <div class="option-group">
-              <label class="option-label"><input type="radio" name="entry.1574468374" value="Nucleus" required onchange="handleOptionSelect(this, 'fb1', 'NUCLEUS STORES DNA! 🧠', '#FF5722', 'opt-a-selected')"> Nucleus</label>
-              <label class="option-label"><input type="radio" name="entry.1574468374" value="Mitochondria" onchange="handleOptionSelect(this, 'fb1', 'POWERHOUSE UNLOCKED! ⚡', '#4CAF50', 'opt-b-selected')"> Mitochondria</label>
-              <label class="option-label"><input type="radio" name="entry.1574468374" value="Ribosome" onchange="handleOptionSelect(this, 'fb1', 'RIBOSOMES MAKE PROTEIN! 🏭', '#2196F3', 'opt-c-selected')"> Ribosome</label>
-              <label class="option-label"><input type="radio" name="entry.1574468374" value="Golgi Apparatus" onchange="handleOptionSelect(this, 'fb1', 'GOLGI PACKAGES PROTEINS! 📦', '#9C27B0', 'opt-d-selected')"> Golgi Apparatus</label>
+              <label class="option-label"><input type="radio" name="entry.1574468374" value="A" required onchange="handleOptionSelect(this, 'fb1', 'GOOD EYE DETECTIVE! 🔍', '#FF5722', 'opt-a-selected')"> A</label>
+              <label class="option-label"><input type="radio" name="entry.1574468374" value="T" onchange="handleOptionSelect(this, 'fb1', 'RE-COUNT THOSE TS! 🧐', '#4CAF50', 'opt-b-selected')"> T</label>
+              <label class="option-label"><input type="radio" name="entry.1574468374" value="G" onchange="handleOptionSelect(this, 'fb1', 'CLOSE, BUT TRY AGAIN! 🧪', '#2196F3', 'opt-c-selected')"> G</label>
+              <label class="option-label"><input type="radio" name="entry.1574468374" value="C" onchange="handleOptionSelect(this, 'fb1', 'C IS BUSY, BUT NOT MOST! ❌', '#9C27B0', 'opt-d-selected')"> C</label>
             </div>
             <div id="fb1" class="feedback-box"></div>
           </div>
@@ -255,7 +247,7 @@
             <div class="option-group">
               <label class="option-label"><input type="radio" name="entry.1205896592" value="They are completely identica" required onchange="handleOptionSelect(this, 'fb10', '1% CAN MAKE A HUGE DIFFERENCE! 🐒', '#FF5722', 'opt-a-selected')"> They are completely identical</label>
               <label class="option-label"><input type="radio" name="entry.1205896592" value="They must come from the same person" onchange="handleOptionSelect(this, 'fb10', 'NOT ALWAYS TRUE IN GENETICS! 🛑', '#4CAF50', 'opt-b-selected')"> They must come from the same person</label>
-              <label class="option-label"><input type="radio" name="entry.1205896592" value="They have very similar sequences, but more analysis is needed to understand their biological relationship" onchange="handleOptionSelect(this, 'fb10', 'TRUE SCIENTIFIC THINKING! 🧠🏆', '#2196F3', 'opt-c-selected')"> They have very similar sequences, but more analysis is needed</label>
+              <label class="option-label"><input type="radio" name="entry.1205896592" value="They have very similar sequences, but more analysis is needed" onchange="handleOptionSelect(this, 'fb10', 'TRUE SCIENTIFIC THINKING! 🧠🏆', '#2196F3', 'opt-c-selected')"> They have very similar sequences, but more analysis is needed</label>
               <label class="option-label"><input type="radio" name="entry.1205896592" value="One sequence is fake" onchange="handleOptionSelect(this, 'fb10', 'DON\'T BLAME THE DATA! 😂', '#9C27B0', 'opt-d-selected')"> One sequence is fake</label>
             </div>
             <div id="fb10" class="feedback-box"></div>
@@ -265,7 +257,6 @@
         </form>
       </div>
 
-      <!-- 3. COMPLETION VIEW -->
       <div id="r1DoneView" class="completion-screen">
         <h1 class="form-title" style="color: #00ffcc; margin-bottom: 10px;">ROUND 1 COMPLETED! 🚀</h1>
         <span class="subtitle-badge">ANSWERS SUBMITTED SUCCESSFULLY</span>
@@ -279,10 +270,8 @@
   </div>
 
   <script>
-    // Secret Passcode for Round 1
     const PASSCODE_ROUND1 = "2026";
 
-    // 1. Check if already completed on page load or refresh
     document.addEventListener("DOMContentLoaded", () => {
       if (localStorage.getItem("coralverse_round1_completed") === "true") {
         showDone();
@@ -291,27 +280,24 @@
       }
     });
 
-    // Auto-fill student information from registration
     const storedName = localStorage.getItem('coralverse_name');
     const storedPhone = localStorage.getItem('coralverse_phone');
     if (storedName) document.getElementById('nameInput').value = storedName;
     if (storedPhone) document.getElementById('phoneInput').value = storedPhone;
 
-    // Floating logo scroll behavior
     const logo = document.getElementById('floating-logo');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 40) logo.classList.add('scrolled');
       else logo.classList.remove('scrolled');
     });
 
-    // Passcode Unlock Logic
     function unlockLobby() {
       const input = document.getElementById("passcodeInput").value.trim();
       if (input === PASSCODE_ROUND1) {
         localStorage.setItem("coralverse_round1_unlocked", "true");
         showQuiz();
       } else {
-        alert("Incorrect Access Code! Please wait for the host to announce it.");
+        alert("Incorrect Access Code!");
       }
     }
 
@@ -320,7 +306,6 @@
       document.getElementById('quizView').style.display = 'block';
     }
 
-    // Option selection & 4 distinct colors
     function handleOptionSelect(radioInput, feedbackId, msg, color, colorClass) {
       const box = document.getElementById(feedbackId);
       box.style.display = 'block'; 
@@ -337,20 +322,33 @@
       radioInput.closest('.option-label').classList.add(colorClass);
     }
 
-    // Submit Logic
     function submitRound1(e) {
       e.preventDefault();
       
       localStorage.setItem("coralverse_round1_completed", "true");
 
       const form = document.getElementById('r1Form');
-      const formData = new URLSearchParams(new FormData(form));
+      const formData = new FormData(form);
+      const searchParams = new URLSearchParams();
 
-      fetch("https://docs.google.com/forms/d/e/1FAIpQLSfb-2fXPeJ2YXYiO-FtVnw0VsUBcTtflIkc8M3Gq7yKmAeQ_Q/formResponse", {
-        method: "POST", mode: "no-cors",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formData.toString()
-      }).then(() => showDone()).catch(() => showDone());
+      for (const pair of formData.entries()) {
+        searchParams.append(pair[0], pair[1]);
+      }
+
+      const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSfb-2fXPeJ2YXYiO-FtVnw0VsUBcTtflIkc8M3Gq7yKmAeQ_Q/formResponse";
+
+      fetch(formURL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: searchParams.toString()
+      }).then(() => {
+        showDone();
+      }).catch(() => {
+        showDone();
+      });
     }
 
     function showDone() {
