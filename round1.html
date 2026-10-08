@@ -70,7 +70,7 @@
     }
     .option-label:hover { border-color: #00f2fe; background: rgba(0, 242, 254, 0.15); }
 
-    /* 4 Distinct Selection Colors for clicked options */
+    /* 4 Distinct Selection Colors */
     .option-label.opt-a-selected { background: rgba(255, 87, 34, 0.3) !important; border-color: #FF5722 !important; color: #ffffff !important; font-weight: bold; }
     .option-label.opt-b-selected { background: rgba(76, 175, 80, 0.3) !important; border-color: #4CAF50 !important; color: #ffffff !important; font-weight: bold; }
     .option-label.opt-c-selected { background: rgba(33, 150, 243, 0.3) !important; border-color: #2196F3 !important; color: #ffffff !important; font-weight: bold; }
@@ -287,7 +287,6 @@
       if (localStorage.getItem("coralverse_round1_completed") === "true") {
         showDone();
       } else if (localStorage.getItem("coralverse_round1_unlocked") === "true") {
-        // If student unlocked it previously on this device, bypass lobby
         showQuiz();
       }
     });
