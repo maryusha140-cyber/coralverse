@@ -53,6 +53,7 @@
   <div class="neon-card">
     <div class="card-inner">
       
+      <!-- REGISTRATION FORM VIEW -->
       <div id="registrationView">
         <div class="header-box">
           <h1 class="main-title">CORALVERSE</h1>
@@ -81,16 +82,17 @@
             <label class="field-label">INSTITUTION / SCHOOL *</label>
             <input type="text" name="entry.442738639" class="input-box" placeholder="Your School or Institution" required>
 
-            <button type="submit" class="submit-btn">SUBMIT REGISTRATION</button>
+            <button type="submit" id="regSubmitBtn" class="submit-btn">SUBMIT REGISTRATION</button>
           </div>
         </form>
       </div>
 
+      <!-- CONFIRMATION / ALREADY SUBMITTED VIEW -->
       <div id="confirmationView" class="completion-screen">
-        <h1 class="main-title" style="margin-bottom: 10px;">REGISTRATION SUCCESSFUL! 🎉</h1>
-        <span class="status-badge">STATUS: CONFIRMED & LOGGED</span>
+        <h1 class="main-title" style="margin-bottom: 10px;">REGISTRATION CONFIRMED! 🎉</h1>
+        <span class="status-badge">STATUS: LOGGED & LOCKED</span>
         <p class="confirm-msg">
-          Your candidate details have been successfully recorded.<br><br>
+          Your candidate details have already been recorded.<br><br>
           <strong>NEXT STEP:</strong> Scan the <strong>ROUND 1 QR CODE</strong> displayed on the host projector screen when Round 1 begins!
         </p>
       </div>
@@ -99,13 +101,23 @@
   </div>
 
   <script>
+    // Prevent multiple submissions on refresh/re-visit
+    document.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem("coralverse_registered") === "true") {
+        showConfirmation();
+      }
+    });
+
     function handleRegistration(e) {
       e.preventDefault();
+      
       const name = document.getElementById('userName').value.trim();
       const phone = document.getElementById('userPhone').value.trim();
       
+      // Save details and completion status locally
       localStorage.setItem('coralverse_name', name);
       localStorage.setItem('coralverse_phone', phone);
+      localStorage.setItem('coralverse_registered', 'true');
 
       const formData = new URLSearchParams(new FormData(document.getElementById('regForm')));
 
